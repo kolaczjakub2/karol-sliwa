@@ -1,0 +1,27 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Basketball editorial fallback image">
+  <rect width="1400" height="900" fill="#07080A"/>
+  <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1050 260) rotate(129) scale(720 520)">
+    <stop stop-color="#F05B24" stop-opacity="0.45"/>
+    <stop offset="0.58" stop-color="#F05B24" stop-opacity="0.08"/>
+    <stop offset="1" stop-color="#F05B24" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1400" height="900" fill="url(#glow)"/>
+  <g opacity="0.18" stroke="#F6F4EF" stroke-width="2">
+    <path d="M-40 735H1440"/>
+    <path d="M700 735V900"/>
+    <circle cx="700" cy="735" r="138"/>
+    <path d="M55 900V735H315V900"/>
+    <path d="M1345 900V735H1085V900"/>
+    <path d="M180 900C180 835 233 782 298 782C363 782 416 835 416 900"/>
+    <path d="M984 900C984 835 1037 782 1102 782C1167 782 1220 835 1220 900"/>
+  </g>
+  <g opacity="0.23">
+    <text x="80" y="270" font-family="Arial Black, Impact, sans-serif" font-size="190" letter-spacing="-8" fill="none" stroke="#F6F4EF" stroke-width="2">NBA</text>
+    <text x="78" y="415" font-family="Arial Black, Impact, sans-serif" font-size="190" letter-spacing="-8" fill="none" stroke="#F6F4EF" stroke-width="2">STORY</text>
+  </g>
+  <path d="M1120 125C1230 198 1284 336 1245 458C1212 562 1123 620 1037 639C929 663 826 616 774 532C717 440 733 317 812 233C891 149 1015 92 1120 125Z" stroke="#F05B24" stroke-width="6" opacity="0.6"/>
+  <path d="M836 246C906 357 1032 473 1245 458" stroke="#F05B24" stroke-width="4" opacity="0.48"/>
+  <path d="M774 532C921 456 1078 328 1120 125" stroke="#F05B24" stroke-width="4" opacity="0.48"/>
+  <text x="82" y="602" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" letter-spacing="7" fill="#F05B24">KAROL MÓWI</text>
+  <text x="82" y="652" font-family="Inter, Arial, sans-serif" font-size="24" fill="#A8A7A1">Autorskie spojrzenie na NBA od 2006 roku</text>
+</svg>

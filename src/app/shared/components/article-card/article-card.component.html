@@ -1,0 +1,26 @@
+<a class="card" [class.card--compact]="compact()" [routerLink]="['/post', post().slug]">
+  <mat-card appearance="outlined">
+    <div class="image-wrap">
+      <img [src]="post().imageUrl" [alt]="post().imageAlt" loading="lazy">
+    </div>
+
+    <mat-card-content>
+      <span class="eyebrow">{{ post().topicNames | categoryLabel }}</span>
+      <h3>{{ post().title }}</h3>
+      @if (!compact()) {
+        <p>{{ post().excerptText }}</p>
+        @if (post().excerptHasReadMore) {
+          <span class="read-more">
+            <span>Czytaj dalej</span>
+            <span class="read-more__icon" aria-hidden="true">&rarr;</span>
+          </span>
+        }
+      }
+      <div class="meta">
+        <span>{{ post().date | date:'d MMM y':'':'pl' }}</span>
+        <span>•</span>
+        <span>{{ post().readTime }} min czytania</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</a>

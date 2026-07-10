@@ -1,0 +1,63 @@
+<section class="archive-hero">
+  <span class="eyebrow">Archiwum</span>
+  <h1>Archiwum tekstów</h1>
+  <p>Wyszukuj teksty, analizy i felietony w uporządkowanym archiwum.</p>
+
+  <div class="archive-toolbar">
+    <label class="search-field">
+      <span>Szukaj wpisów</span>
+      <mat-icon fontSet="material-icons-outlined">search</mat-icon>
+      <input type="search" [ngModel]="searchTerm()" (ngModelChange)="onSearch($event)" placeholder="np. draft, Knicks, Jokic">
+    </label>
+
+    <div class="filters" aria-label="Filtruj wpisy">
+      @for (filter of filterOptions; track filter) {
+        <button type="button" [class.is-active]="activeFilter() === filter" (click)="setFilter(filter)">{{ filter }}</button>
+      }
+    </div>
+  </div>
+</section>
+
+@if (loading()) {
+  <div class="state"><mat-spinner diameter="42" /></div>
+} @else if (error()) {
+  <div class="state state--error">{{ error() }}</div>
+} @else {
+  <section class="archive-grid">
+    @for (post of displayedPosts(); track post.id) {
+      <ks-article-card [post]="post" />
+    } @empty {
+      <p class="empty">Nie znaleziono wpisów dla tej frazy.</p>
+    }
+  </section>
+
+  <nav class="archive-paginator" aria-label="Paginacja archiwum">
+    <div class="archive-paginator__meta">
+      <span>{{ displayedTotal() }} wpisów</span>
+      <label>
+        Na stronie
+        <select [ngModel]="perPage()" (ngModelChange)="setPageSize($event)">
+          @for (option of pageSizeOptions; track option) {
+            <option [ngValue]="option">{{ option }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <div class="archive-paginator__controls">
+      <button type="button" aria-label="Poprzednia strona" [disabled]="page() === 1" (click)="setPage(page() - 1)">
+        <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+      </button>
+
+      @for (pageNumber of pageNumbers(); track pageNumber) {
+        <button type="button" [class.is-active]="page() === pageNumber" (click)="setPage(pageNumber)">
+          {{ pageNumber }}
+        </button>
+      }
+
+      <button type="button" aria-label="Następna strona" [disabled]="page() === totalPages()" (click)="setPage(page() + 1)">
+        <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+      </button>
+    </div>
+  </nav>
+}

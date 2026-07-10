@@ -1,0 +1,199 @@
+@if (loading()) {
+  <section class="loading-state">
+    <mat-spinner diameter="42" />
+    <p>Pobieram najnowsze wpisy…</p>
+  </section>
+} @else if (error()) {
+  <section class="error-state">
+    <h1>Nie udało się pobrać wpisów</h1>
+    <p>{{ error() }}</p>
+    <a mat-flat-button routerLink="/archiwum">Przejdź do archiwum</a>
+  </section>
+} @else {
+  @for (post of heroSlide(); track post.id) {
+    <section
+      class="hero"
+      [class.hero--fallback]="!post.hasFeaturedImage"
+      [class.hero--prev]="heroDirection() === 'prev'"
+      (mouseenter)="setHeroPaused(true)"
+      (mouseleave)="setHeroPaused(false)"
+    >
+      <aside class="hero__rail" aria-label="Wybierz wyróżniony wpis">
+        @for (item of heroPosts(); track item.id; let i = $index) {
+          <button
+            type="button"
+            class="hero__rail-item"
+            [class.is-active]="i === heroIndex()"
+            [attr.aria-label]="'Pokaż wyróżniony wpis ' + heroNumber(i)"
+            (click)="selectHero(i)"
+          >
+            <span>{{ heroNumber(i) }}</span>
+          </button>
+        }
+        <span class="rail-caption">Wybierz</span>
+      </aside>
+
+      <div class="hero__copy">
+        <span class="eyebrow">Wyróżniony wpis</span>
+        <h1>{{ post.title }}</h1>
+        <p>{{ heroSummary(post) }}</p>
+
+        <div class="hero__meta">
+          @if (post.authorAvatar) {
+            <img [src]="post.authorAvatar" alt="" loading="lazy">
+          }
+          <strong>{{ post.authorName }}</strong>
+          <span>•</span>
+          <span>{{ post.date | date:'d MMM y':'':'pl' }}</span>
+          <span class="hero__read-time-separator">•</span>
+          <span class="hero__read-time">{{ post.readTime }} min czytania</span>
+        </div>
+
+        <div class="hero__actions">
+          <a class="hero__primary-cta" [routerLink]="['/post', post.slug]">
+            <span>Czytaj wpis</span>
+            <mat-icon fontSet="material-icons-outlined" aria-hidden="true">arrow_forward</mat-icon>
+          </a>
+          <a class="text-link" routerLink="/archiwum">Zobacz wszystkie wpisy →</a>
+        </div>
+      </div>
+
+      <div class="hero__visual" [ngClass]="heroImageClass(post)">
+        <a class="hero__visual-link" [routerLink]="['/post', post.slug]" [attr.aria-label]="'Czytaj wpis: ' + post.title">
+          <span class="massive-title">{{ heroBackdropLabel(post) }}</span>
+          <img [src]="heroImage(post)" [alt]="post.imageAlt">
+          <span class="hero__category">{{ primaryCategory(post) }}</span>
+        </a>
+
+        <div class="hero__controls" aria-label="Sterowanie wyróżnionymi wpisami">
+          <button mat-icon-button type="button" aria-label="Poprzedni wpis" (click)="previousHero()">
+            <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+          </button>
+          <button mat-icon-button type="button" aria-label="Następny wpis" (click)="nextHero()">
+            <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+          </button>
+        </div>
+
+        @if (podcastPost(); as podcast) {
+          <a class="podcast-float" [routerLink]="['/post', podcast.slug]" aria-label="Przejdź do najnowszego podcastu">
+            <span>Najnowszy podcast</span>
+            <strong>{{ podcast.title }}</strong>
+            <small>{{ podcast.readTime }} min czytania / słuchania</small>
+            <span class="podcast-float__play" aria-hidden="true">
+              <mat-icon fontSet="material-icons-outlined">play_arrow</mat-icon>
+            </span>
+          </a>
+        }
+      </div>
+
+      <div class="hero__mobile-dots" aria-label="Wybierz wyróżniony wpis">
+        @for (item of heroPosts(); track item.id; let i = $index) {
+          <button
+            type="button"
+            [class.is-active]="i === heroIndex()"
+            [attr.aria-label]="'Pokaż wyróżniony wpis ' + heroNumber(i)"
+            (click)="selectHero(i)"
+          ></button>
+        }
+      </div>
+    </section>
+  }
+
+  <section class="formats" id="tematy" aria-labelledby="formats-title">
+    <div class="formats__intro">
+      <span class="eyebrow">Tematy</span>
+      <h2 id="formats-title">Podcasty i najważniejsze newsy z NBA.</h2>
+      <p>Podcasty i najważniejsze informacje zebrane w prostym podziale, który pomaga szybciej wejść w aktualne materiały.</p>
+    </div>
+
+    <div class="formats__tiles">
+      @for (format of formats; track format.title) {
+        <ks-category-tile
+          [icon]="format.icon"
+          [title]="format.title"
+          [description]="format.description"
+          (selected)="setFilter($event)"
+        />
+      }
+    </div>
+  </section>
+
+  <section class="latest" id="najnowsze">
+    <header class="section-header">
+      <div>
+        <span class="eyebrow">Feed</span>
+        <h2>Najnowsze artykuły</h2>
+      </div>
+
+      <div class="filters" aria-label="Filtruj wpisy">
+        @for (filter of filterOptions; track filter) {
+          <button type="button" [class.is-active]="activeFilter() === filter" (click)="setFilter(filter)">{{ filter }}</button>
+        }
+      </div>
+    </header>
+
+    <div class="latest__grid">
+      @for (post of filteredLatest(); track post.id) {
+        <ks-article-card [post]="post" />
+      } @empty {
+        <p class="empty">Brak wpisów dla wybranego filtra w aktualnie pobranej paczce. Sprawdź archiwum.</p>
+      }
+    </div>
+
+    <div class="more-link">
+      <a routerLink="/archiwum">Zobacz więcej wpisów →</a>
+    </div>
+  </section>
+
+  @if (podcastPost(); as podcast) {
+    <section class="podcast" id="podcast">
+      <div class="podcast__label">Podcast</div>
+      <div class="podcast__image">
+        <img [src]="podcast.imageUrl" [alt]="podcast.imageAlt">
+        <button mat-fab aria-label="Odtwórz odcinek">
+          <mat-icon fontSet="material-icons-outlined">play_arrow</mat-icon>
+        </button>
+      </div>
+      <div class="podcast__copy">
+        <span class="eyebrow">Nowy odcinek</span>
+        <h2>{{ podcast.title }}</h2>
+        <a [routerLink]="['/post', podcast.slug]">Słuchaj / czytaj teraz →</a>
+      </div>
+      <div class="podcast__episodes">
+        <span>Ostatnie odcinki</span>
+        @for (episode of recentPodcastPosts(); track episode.id) {
+          <a [routerLink]="['/post', episode.slug]">
+            <span>{{ episode.title }}</span>
+            <strong>{{ episode.date | date:'d MMM y':'':'pl' }}</strong>
+          </a>
+        } @empty {
+          <p>Brak starszych odcinków w aktualnie pobranej puli.</p>
+        }
+      </div>
+    </section>
+  }
+
+  <section class="author-newsletter" id="autor">
+    <article class="author-box">
+      <div class="author-box__copy">
+        <span class="eyebrow">O autorze</span>
+        <h2>Od 2006 roku nieprzerwanie o NBA.</h2>
+        <p>Ta wersja strony pokazuje Karola nie tylko jako autora bloga, ale jako niezależne, rozpoznawalne medium: teksty, analizy, podcast i archiwum w jednym miejscu.</p>
+        <a class="author-box__link" routerLink="/o-mnie">
+          Poznaj mnie lepiej
+          <mat-icon fontSet="material-icons-outlined">arrow_forward</mat-icon>
+        </a>
+      </div>
+      <div class="author-box__stats">
+        <p><strong>18+ lat</strong><span>o koszykówce i NBA</span></p>
+        <p><strong>1000+</strong><span>opublikowanych tekstów</span></p>
+        <p><strong>NBA & FIBA</strong><span>akredytowany dziennikarz</span></p>
+        <p><strong>Podcast</strong><span>rozmowy i odcinki od lat</span></p>
+      </div>
+      <div class="author-box__focus">
+        <span>Na stronie znajdziesz</span>
+        <p>Analizy, newsy, rozmowy i archiwum tekstów pisanych z perspektywy osoby, która śledzi ligę z bliska od wielu sezonów.</p>
+      </div>
+    </article>
+  </section>
+}

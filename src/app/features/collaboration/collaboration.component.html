@@ -1,0 +1,98 @@
+<section class="collab-hero">
+  <div class="collab-hero__copy">
+    <a class="back-link" routerLink="/">← Strona główna</a>
+    <span class="eyebrow">Współpraca</span>
+    <h1>Miejsce na Twoją reklamę.</h1>
+    <p>
+      Chcesz zareklamować się na stronie Karol Mówi albo zrobić wspólną akcję
+      dla ludzi od NBA? Pogadajmy. W grę wchodzi każda forma współpracy,
+      z podkreśleniem słowa każda.
+    </p>
+    <div class="collab-hero__actions">
+      <a class="primary-cta" [href]="'mailto:' + email">
+        Napisz do Karola
+        <mat-icon fontSet="material-icons-outlined">arrow_forward</mat-icon>
+      </a>
+      <a class="text-link" routerLink="/o-mnie">Poznaj autora →</a>
+    </div>
+  </div>
+
+  <aside class="ad-pass" aria-label="Miejsce na reklamę">
+    <span>Karol Mówi</span>
+    <strong>Twoja marka przy NBA</strong>
+    <p>Jednorazowa akcja, dłuższa współpraca, podcast, tekst, konkurs albo coś, czego jeszcze nie nazwaliśmy.</p>
+    <a [href]="'mailto:' + email">
+      {{ email }}
+      <mat-icon fontSet="material-icons-outlined">mail</mat-icon>
+    </a>
+  </aside>
+</section>
+
+<section class="promise-grid" aria-label="Dlaczego warto">
+  <article>
+    <strong>Od 2006</strong>
+    <span>ciągłość i rozpoznawalność</span>
+  </article>
+  <article>
+    <strong>NBA</strong>
+    <span>jasny kontekst odbiorców</span>
+  </article>
+  <article>
+    <strong>Podcast</strong>
+    <span>formaty tekstowe i audio</span>
+  </article>
+  <article>
+    <strong>Bez szablonu</strong>
+    <span>pomysł ważniejszy niż pakiet</span>
+  </article>
+</section>
+
+<section class="cooperation-options">
+  <header class="section-heading">
+    <span class="eyebrow">Możliwości</span>
+    <h2>Nie tylko baner. Chodzi o pomysł.</h2>
+  </header>
+
+  <div class="cooperation-options__grid">
+    @for (option of options; track option.title) {
+      <article>
+        <mat-icon fontSet="material-icons-outlined">{{ option.icon }}</mat-icon>
+        <h3>{{ option.title }}</h3>
+        <p>{{ option.description }}</p>
+      </article>
+    }
+  </div>
+</section>
+
+<section class="trusted">
+  <div class="trusted__copy">
+    <span class="eyebrow">Zaufali</span>
+    <h2>Marki i projekty, które już były po tej stronie parkietu.</h2>
+    <p>
+      Na przestrzeni lat Karol współpracował z różnymi firmami i brał udział
+      w bardzo różnych projektach. Forma jest otwarta, liczy się dopasowanie.
+    </p>
+  </div>
+
+  <div class="brand-cloud" aria-label="Przykładowe marki">
+    @for (brand of brands; track brand) {
+      <span>{{ brand }}</span>
+    }
+  </div>
+</section>
+
+<section class="contact-panel">
+  <div>
+    <span class="eyebrow">Kontakt</span>
+    <h2>Ogranicza nas tylko wyobraźnia. Twoja i moja.</h2>
+    <p>
+      Napisz, co chcesz zrobić, jaki masz termin i jaki efekt byłby sukcesem.
+      Najprościej zacząć od maila.
+    </p>
+  </div>
+
+  <a class="primary-cta primary-cta--large" [href]="'mailto:' + email">
+    {{ email }}
+    <mat-icon fontSet="material-icons-outlined">mail</mat-icon>
+  </a>
+</section>

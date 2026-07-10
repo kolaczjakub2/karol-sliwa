@@ -1,0 +1,8 @@
+<svg width="1200" height="750" viewBox="0 0 1200 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="750" fill="#07080A"/>
+  <circle cx="920" cy="210" r="300" fill="#F05B24" fill-opacity="0.22"/>
+  <path d="M0 560C280 480 510 495 715 420C870 363 1010 246 1200 260" stroke="#F05B24" stroke-width="4" stroke-opacity="0.8"/>
+  <text x="72" y="210" fill="#F6F4EF" font-size="112" font-family="Arial, sans-serif" font-weight="900">NBA</text>
+  <text x="72" y="325" fill="none" stroke="#F6F4EF" stroke-opacity="0.28" stroke-width="2" font-size="112" font-family="Arial, sans-serif" font-weight="900">STORY</text>
+  <text x="76" y="420" fill="#A8A7A1" font-size="34" font-family="Arial, sans-serif">Karol Śliwa · redesign concept</text>
+</svg>

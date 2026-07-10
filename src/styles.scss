@@ -1,0 +1,194 @@
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700&display=swap');
+
+:root {
+  color-scheme: dark;
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-brand: 'Anton', 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --container: 1540px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 80px;
+  --space-10: 112px;
+
+  --radius-sm: 14px;
+  --radius-md: 22px;
+  --radius-lg: 32px;
+
+  --color-bg: #050608;
+  --color-bg-soft: #080a0d;
+  --color-surface: #101216;
+  --color-surface-2: #151820;
+  --color-border: rgba(255, 255, 255, 0.11);
+  --color-text: #f6f4ef;
+  --color-muted: #a8a7a1;
+  --color-dimmed: #70726f;
+  --color-orange: #f05b24;
+  --color-orange-dark: #ba3c14;
+  --color-on-accent: #ffffff;
+  --color-button-outline: rgba(255, 255, 255, 0.42);
+  --color-control-bg: rgba(255, 255, 255, 0.035);
+  --color-header-bg: rgba(5, 6, 8, 0.82);
+  --color-image-bg: #111111;
+  --color-danger: #ff8676;
+  --switch-unselected-track: rgba(255, 255, 255, 0.18);
+  --switch-unselected-track-hover: rgba(255, 255, 255, 0.24);
+
+  --gradient-body:
+    radial-gradient(circle at 78% 4%, rgba(240, 91, 36, 0.18), transparent 28vw),
+    radial-gradient(circle at 2% 24%, rgba(255, 255, 255, 0.06), transparent 22vw),
+    linear-gradient(180deg, #050608 0%, #07080a 42%, #050608 100%);
+  --gradient-grid:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  --gradient-card: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.028));
+  --gradient-card-soft: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  --gradient-panel: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018));
+  --gradient-tile: radial-gradient(circle at 82% 0%, rgba(240, 91, 36, 0.20), transparent 34%),
+                   linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02));
+  --grid-pattern:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  --image-filter: saturate(0.95) contrast(1.06) brightness(0.82);
+  --hero-image-filter: saturate(0.88) contrast(1.1) brightness(0.72);
+  --article-image-filter: brightness(0.72) contrast(1.08) saturate(0.9);
+  --poster-muted-text: rgba(255,255,255,0.32);
+  --outline-stroke: rgba(255, 255, 255, 0.16);
+  --podcast-label-stroke: rgba(255,255,255,0.18);
+  --podcast-float-bg: rgba(8, 8, 9, 0.78);
+  --podcast-float-title: #ffffff;
+  --card-hover-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+  --hero-mask: linear-gradient(90deg, transparent 0, black 20%, black 100%);
+  --brand-logo-filter: invert(1) grayscale(1) brightness(2.1) contrast(1.12);
+  --brand-logo-blend: screen;
+
+  --mat-app-background-color: var(--color-bg);
+  --mat-app-text-color: var(--color-text);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-bg: #ffffff;
+  --color-bg-soft: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-2: #f7f7f7;
+  --color-border: rgba(40, 30, 22, 0.14);
+  --color-text: #17120f;
+  --color-muted: #62584f;
+  --color-dimmed: #887b70;
+  --color-orange: #dc4f1e;
+  --color-orange-dark: #a43a16;
+  --color-on-accent: #ffffff;
+  --color-button-outline: rgba(23, 18, 15, 0.34);
+  --color-control-bg: rgba(255, 255, 255, 0.82);
+  --color-header-bg: rgba(255, 255, 255, 0.92);
+  --color-image-bg: #f1f1f1;
+  --color-danger: #bc2b1f;
+  --switch-unselected-track: rgba(23, 18, 15, 0.16);
+  --switch-unselected-track-hover: rgba(23, 18, 15, 0.22);
+
+  --gradient-body: #ffffff;
+  --gradient-grid:
+    linear-gradient(transparent, transparent),
+    linear-gradient(transparent, transparent);
+  --gradient-card: #ffffff;
+  --gradient-card-soft: #ffffff;
+  --gradient-panel: #ffffff;
+  --gradient-tile: #ffffff;
+  --grid-pattern:
+    linear-gradient(transparent, transparent),
+    linear-gradient(transparent, transparent);
+  --image-filter: saturate(0.92) contrast(1.04) brightness(0.95);
+  --hero-image-filter: saturate(0.92) contrast(1.05) brightness(0.88);
+  --article-image-filter: brightness(0.95) contrast(1.03) saturate(0.92);
+  --poster-muted-text: rgba(23, 18, 15, 0.38);
+  --outline-stroke: rgba(23, 18, 15, 0.14);
+  --podcast-label-stroke: rgba(23, 18, 15, 0.18);
+  --podcast-float-bg: rgba(255, 250, 242, 0.84);
+  --podcast-float-title: #17120f;
+  --card-hover-shadow: 0 24px 70px rgba(112, 76, 45, 0.18);
+  --hero-mask: linear-gradient(90deg, transparent 0, black 18%, black 100%);
+  --brand-logo-filter: none;
+  --brand-logo-blend: multiply;
+
+  --mat-app-background-color: var(--color-bg);
+  --mat-app-text-color: var(--color-text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--gradient-body);
+  transition: background 220ms ease, color 220ms ease;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image: var(--gradient-grid);
+  background-size: 90px 90px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 70%);
+}
+
+:root[data-theme='light'] body::before {
+  display: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+a,
+input {
+  font: inherit;
+}
+
+::selection {
+  background: var(--color-orange);
+  color: var(--color-on-accent);
+}
+
+.mat-mdc-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button {
+  min-height: 44px;
+}
+
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-outline-color: var(--color-border);
+  --mdc-outlined-text-field-hover-outline-color: rgba(240, 91, 36, 0.55);
+  --mdc-outlined-text-field-focus-outline-color: var(--color-orange);
+  --mdc-outlined-text-field-input-text-color: var(--color-text);
+  --mdc-outlined-text-field-label-text-color: var(--color-muted);
+  --mdc-outlined-text-field-leading-icon-color: var(--color-muted);
+}
+
+.mat-mdc-paginator-container {
+  color: var(--color-text);
+}
