@@ -1,0 +1,190 @@
+@use '../../styles/collaboration-shared' as collab;
+
+@include collab.text-markers;
+@include collab.primary-cta;
+
+:host {
+  display: block;
+}
+
+.collab-hero {
+  min-height: 590px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(380px, 0.92fr);
+  gap: var(--space-5);
+}
+
+.collab-hero__copy,
+.ad-pass {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--gradient-card-soft);
+}
+
+.collab-hero__copy {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  padding: clamp(var(--space-6), 6vw, var(--space-9));
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.058), rgba(255,255,255,0.018) 56%, rgba(240,91,36,0.12)),
+    var(--color-bg-soft);
+
+  &::before {
+    content: 'AD SPACE';
+    position: absolute;
+    right: -0.14em;
+    bottom: -0.12em;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--outline-stroke);
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 12vw, 12rem);
+    line-height: 0.8;
+    letter-spacing: -0.08em;
+    pointer-events: none;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 {
+    max-width: 850px;
+    margin: var(--space-3) 0;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(3.7rem, 7.6vw, 8.6rem);
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+    text-transform: uppercase;
+  }
+
+  p {
+    max-width: 720px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: clamp(1.05rem, 1.45vw, 1.24rem);
+    line-height: 1.82;
+  }
+}
+
+.collab-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.text-link {
+  color: var(--color-text);
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.ad-pass {
+  position: relative;
+  display: grid;
+  align-content: end;
+  gap: var(--space-4);
+  min-height: 100%;
+  padding: var(--space-7);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 70% 0%, rgba(240, 91, 36, 0.28), transparent 34%),
+    linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.016)),
+    var(--color-surface);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: var(--space-5);
+    border: 1px dashed rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-md);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: 'REKLAMA';
+    position: absolute;
+    top: var(--space-6);
+    right: var(--space-6);
+    color: transparent;
+    -webkit-text-stroke: 1px var(--outline-stroke);
+    font-family: var(--font-display);
+    font-size: clamp(4.5rem, 9vw, 8rem);
+    line-height: 0.8;
+    letter-spacing: -0.08em;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  > span {
+    color: var(--color-orange);
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  strong {
+    max-width: 520px;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 5.6rem);
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+    text-transform: uppercase;
+  }
+
+  p {
+    max-width: 480px;
+    margin: 0;
+    color: var(--color-muted);
+    line-height: 1.75;
+  }
+
+  a {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 900;
+  }
+}
+
+@media (max-width: 1180px) {
+  .collab-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .collab-hero {
+    min-height: auto;
+  }
+
+  .collab-hero__copy,
+  .ad-pass {
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+  }
+
+  .primary-cta,
+  .ad-pass a {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

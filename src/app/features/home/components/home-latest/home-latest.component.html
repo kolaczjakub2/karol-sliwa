@@ -1,0 +1,26 @@
+<section class="latest" id="najnowsze">
+  <header class="section-header">
+    <div>
+      <span class="eyebrow">Feed</span>
+      <h2>Najnowsze artykuły</h2>
+    </div>
+
+    <div class="filters" aria-label="Filtruj wpisy">
+      @for (filter of filterOptions(); track filter) {
+        <button type="button" [class.is-active]="activeFilter() === filter" (click)="filterChange.emit(filter)">{{ filter }}</button>
+      }
+    </div>
+  </header>
+
+  <div class="latest__grid">
+    @for (post of posts(); track post.id) {
+      <ks-article-card [post]="post" />
+    } @empty {
+      <p class="empty">Brak wpisów dla wybranego filtra w aktualnie pobranej paczce. Sprawdź archiwum.</p>
+    }
+  </div>
+
+  <div class="more-link">
+    <a routerLink="/archiwum">Zobacz więcej wpisów →</a>
+  </div>
+</section>

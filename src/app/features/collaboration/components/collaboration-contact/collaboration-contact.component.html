@@ -1,0 +1,15 @@
+<section class="contact-panel">
+  <div>
+    <span class="eyebrow">Kontakt</span>
+    <h2>Ogranicza nas tylko wyobraźnia. Twoja i moja.</h2>
+    <p>
+      Napisz, co chcesz zrobić, jaki masz termin i jaki efekt byłby sukcesem.
+      Najprościej zacząć od maila.
+    </p>
+  </div>
+
+  <a class="primary-cta primary-cta--large" [href]="'mailto:' + email()">
+    {{ email() }}
+    <mat-icon fontSet="material-icons-outlined">mail</mat-icon>
+  </a>
+</section>

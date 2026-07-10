@@ -1,0 +1,18 @@
+<section class="formats" id="tematy" aria-labelledby="formats-title">
+  <div class="formats__intro">
+    <span class="eyebrow">Tematy</span>
+    <h2 id="formats-title">Podcasty i najważniejsze newsy z NBA.</h2>
+    <p>Podcasty i najważniejsze informacje zebrane w prostym podziale, który pomaga szybciej wejść w aktualne materiały.</p>
+  </div>
+
+  <div class="formats__tiles">
+    @for (format of formats(); track format.title) {
+      <ks-category-tile
+        [icon]="format.icon"
+        [title]="format.title"
+        [description]="format.description"
+        (selected)="formatSelected.emit($event)"
+      />
+    }
+  </div>
+</section>

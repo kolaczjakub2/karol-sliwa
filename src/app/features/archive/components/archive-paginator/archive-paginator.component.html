@@ -1,0 +1,29 @@
+<nav class="archive-paginator" aria-label="Paginacja archiwum">
+  <div class="archive-paginator__meta">
+    <span>{{ total() }} wpisów</span>
+    <label>
+      Na stronie
+      <select [ngModel]="perPage()" (ngModelChange)="pageSizeChange.emit($event)">
+        @for (option of pageSizeOptions(); track option) {
+          <option [ngValue]="option">{{ option }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <div class="archive-paginator__controls">
+    <button type="button" aria-label="Poprzednia strona" [disabled]="page() === 1" (click)="pageChange.emit(page() - 1)">
+      <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+    </button>
+
+    @for (pageNumber of pageNumbers(); track pageNumber) {
+      <button type="button" [class.is-active]="page() === pageNumber" (click)="pageChange.emit(pageNumber)">
+        {{ pageNumber }}
+      </button>
+    }
+
+    <button type="button" aria-label="Następna strona" [disabled]="page() === totalPages()" (click)="pageChange.emit(page() + 1)">
+      <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+    </button>
+  </div>
+</nav>

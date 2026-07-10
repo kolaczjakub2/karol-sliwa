@@ -1,0 +1,86 @@
+<section
+  class="hero"
+  [class.hero--fallback]="!post().hasFeaturedImage"
+  [class.hero--prev]="direction() === 'prev'"
+  (mouseenter)="pauseChange.emit(true)"
+  (mouseleave)="pauseChange.emit(false)"
+>
+  <aside class="hero__rail" aria-label="Wybierz wyróżniony wpis">
+    @for (item of heroPosts(); track item.id; let i = $index) {
+      <button
+        type="button"
+        class="hero__rail-item"
+        [class.is-active]="i === activeIndex()"
+        [attr.aria-label]="'Pokaż wyróżniony wpis ' + heroNumber(i)"
+        (click)="heroSelected.emit(i)"
+      >
+        <span>{{ heroNumber(i) }}</span>
+      </button>
+    }
+    <span class="rail-caption">Wybierz</span>
+  </aside>
+
+  <div class="hero__copy">
+    <span class="eyebrow">Wyróżniony wpis</span>
+    <h1>{{ post().title }}</h1>
+    <p>{{ heroSummary(post()) }}</p>
+
+    <div class="hero__meta">
+      @if (post().authorAvatar) {
+        <img [src]="post().authorAvatar" alt="" loading="lazy">
+      }
+      <strong>{{ post().authorName }}</strong>
+      <span>•</span>
+      <span>{{ post().date | date:'d MMM y':'':'pl' }}</span>
+      <span class="hero__read-time-separator">•</span>
+      <span class="hero__read-time">{{ post().readTime }} min czytania</span>
+    </div>
+
+    <div class="hero__actions">
+      <a class="hero__primary-cta" [routerLink]="['/post', post().slug]">
+        <span>Czytaj wpis</span>
+        <mat-icon fontSet="material-icons-outlined" aria-hidden="true">arrow_forward</mat-icon>
+      </a>
+      <a class="text-link" routerLink="/archiwum">Zobacz wszystkie wpisy →</a>
+    </div>
+  </div>
+
+  <div class="hero__visual" [ngClass]="heroImageClass(post())">
+    <a class="hero__visual-link" [routerLink]="['/post', post().slug]" [attr.aria-label]="'Czytaj wpis: ' + post().title">
+      <span class="massive-title">{{ heroBackdropLabel(post()) }}</span>
+      <img [src]="heroImage(post())" [alt]="post().imageAlt">
+      <span class="hero__category">{{ primaryCategory(post()) }}</span>
+    </a>
+
+    <div class="hero__controls" aria-label="Sterowanie wyróżnionymi wpisami">
+      <button mat-icon-button type="button" aria-label="Poprzedni wpis" (click)="previous.emit()">
+        <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+      </button>
+      <button mat-icon-button type="button" aria-label="Następny wpis" (click)="next.emit()">
+        <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+      </button>
+    </div>
+
+    @if (podcastPost(); as podcast) {
+      <a class="podcast-float" [routerLink]="['/post', podcast.slug]" aria-label="Przejdź do najnowszego podcastu">
+        <span>Najnowszy podcast</span>
+        <strong>{{ podcast.title }}</strong>
+        <small>{{ podcast.readTime }} min czytania / słuchania</small>
+        <span class="podcast-float__play" aria-hidden="true">
+          <mat-icon fontSet="material-icons-outlined">play_arrow</mat-icon>
+        </span>
+      </a>
+    }
+  </div>
+
+  <div class="hero__mobile-dots" aria-label="Wybierz wyróżniony wpis">
+    @for (item of heroPosts(); track item.id; let i = $index) {
+      <button
+        type="button"
+        [class.is-active]="i === activeIndex()"
+        [attr.aria-label]="'Pokaż wyróżniony wpis ' + heroNumber(i)"
+        (click)="heroSelected.emit(i)"
+      ></button>
+    }
+  </div>
+</section>

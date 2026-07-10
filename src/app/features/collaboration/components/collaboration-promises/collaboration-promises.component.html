@@ -1,0 +1,8 @@
+<section class="promise-grid" aria-label="Dlaczego warto">
+  @for (promise of promises(); track promise.value) {
+    <article>
+      <strong>{{ promise.value }}</strong>
+      <span>{{ promise.label }}</span>
+    </article>
+  }
+</section>

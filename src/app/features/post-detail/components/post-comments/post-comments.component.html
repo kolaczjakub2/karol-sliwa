@@ -1,0 +1,146 @@
+<section class="comments" id="komentarze" aria-labelledby="comments-title">
+  <div class="comments__header">
+    <span class="eyebrow">Dyskusja</span>
+    <h2 id="comments-title">Komentarze</h2>
+    <p>
+      Dołącz do rozmowy pod artykułem. Odpowiedzi są układane w wątki,
+      dzięki czemu łatwo śledzić, kto komu odpowiada.
+    </p>
+  </div>
+
+  <div class="comments__body">
+    <div class="comments__list" aria-live="polite">
+      @if (loading()) {
+        <div class="comments__state">
+          <mat-spinner diameter="34" />
+          <span>Ładowanie komentarzy...</span>
+        </div>
+      } @else if (error()) {
+        <div class="comments__state comments__state--error">
+          <mat-icon fontSet="material-icons-outlined">error_outline</mat-icon>
+          <span>{{ error() }}</span>
+        </div>
+      } @else if (rows().length) {
+        @for (row of rows(); track row.comment.id) {
+          <article
+            class="comment-card"
+            [class.comment-card--reply]="row.depth > 0"
+            [class.comment-card--pending]="row.comment.isPending"
+            [style.--comment-depth]="row.depth"
+          >
+            <div class="comment-card__avatar">
+              @if (row.comment.authorAvatar) {
+                <img [src]="row.comment.authorAvatar" alt="" loading="lazy">
+              } @else {
+                <mat-icon fontSet="material-icons-outlined">person</mat-icon>
+              }
+            </div>
+            <div class="comment-card__content">
+              <header>
+                <strong>{{ row.comment.authorName }}</strong>
+                <span>{{ row.comment.date | date:'d MMM y, HH:mm':'':'pl' }}</span>
+                @if (row.parentName) {
+                  <span class="comment-card__parent">odpowiedź do {{ row.parentName }}</span>
+                }
+                @if (row.comment.isPending) {
+                  <em>oczekuje na moderację</em>
+                }
+              </header>
+              <div class="comment-card__text" [innerHTML]="row.comment.contentHtml"></div>
+              <button type="button" class="comment-card__reply-button" (click)="replyStarted.emit(row.comment)">
+                <svg class="comment-card__reply-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M10.5 6.5 5 12l5.5 5.5v-3.4h4.2c2.4 0 4.3 1.1 5.3 3.3-.2-4.2-2.3-7.7-6.8-7.7h-2.7V6.5Z" />
+                </svg>
+                <span>Odpowiedz</span>
+              </button>
+            </div>
+          </article>
+        }
+      } @else {
+        <div class="comments__empty">
+          <mat-icon fontSet="material-icons-outlined">chat_bubble_outline</mat-icon>
+          <strong>Brak komentarzy pod tym wpisem</strong>
+          <span>Bądź pierwszą osobą, która rozpocznie dyskusję.</span>
+        </div>
+      }
+    </div>
+
+    <form id="comment-form" class="comment-form" [formGroup]="form()" (ngSubmit)="submitted.emit(article())">
+      <span class="comment-form__label">Dodaj komentarz</span>
+      <h3>Dołącz do rozmowy</h3>
+
+      @if (notice()) {
+        <div class="comment-form__notice">
+          <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          <span>{{ notice() }}</span>
+        </div>
+      }
+
+      @if (replyingTo(); as parentComment) {
+        <div class="comment-form__replying">
+          <div>
+            <span>Odpowiadasz na komentarz</span>
+            <strong>{{ parentComment.authorName }}</strong>
+          </div>
+          <button mat-icon-button type="button" aria-label="Anuluj odpowiedź" (click)="replyCanceled.emit()">
+            <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+          </button>
+        </div>
+      }
+
+      <mat-form-field appearance="outline">
+        <mat-label>Imię / podpis</mat-label>
+        <input matInput formControlName="authorName" autocomplete="name">
+        @if (form().controls.authorName.hasError('required')) {
+          <mat-error>Podaj imię lub podpis.</mat-error>
+        }
+        @if (form().controls.authorName.hasError('minlength')) {
+          <mat-error>Podpis musi mieć minimum 2 znaki.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="authorEmail" type="email" autocomplete="email">
+        <mat-hint>Email nie będzie pokazany publicznie.</mat-hint>
+        @if (form().controls.authorEmail.hasError('required')) {
+          <mat-error>Podaj adres email.</mat-error>
+        }
+        @if (form().controls.authorEmail.hasError('email')) {
+          <mat-error>Podaj poprawny adres email.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Strona WWW, opcjonalnie</mat-label>
+        <input matInput formControlName="authorUrl" type="url" autocomplete="url">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="comment-form__textarea">
+        <mat-label>Komentarz</mat-label>
+        <textarea matInput formControlName="content" rows="7"></textarea>
+        <mat-hint align="end">{{ form().controls.content.value.length }}/3000</mat-hint>
+        @if (form().controls.content.hasError('required')) {
+          <mat-error>Wpisz treść komentarza.</mat-error>
+        }
+        @if (form().controls.content.hasError('minlength')) {
+          <mat-error>Komentarz musi mieć minimum 5 znaków.</mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-flat-button type="submit" [disabled]="submitting()">
+        <mat-icon fontSet="material-icons-outlined" class="comment-form__submit-icon" [class.is-hidden]="submitting()">send</mat-icon>
+        @if (submitting()) {
+          <mat-spinner diameter="18" />
+          <span>Wysyłanie...</span>
+        } @else {
+          <span>{{ replyingTo() ? 'Opublikuj odpowiedź' : 'Opublikuj komentarz' }}</span>
+        }
+      </button>
+
+      <p class="comment-form__smallprint">
+        Po wysłaniu komentarz może pojawić się od razu albo po akceptacji - zależnie od ustawień moderacji.
+      </p>
+    </form>
+  </div>
+</section>

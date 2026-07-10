@@ -1,0 +1,25 @@
+<section class="podcast" id="podcast">
+  <div class="podcast__label">Podcast</div>
+  <div class="podcast__image">
+    <img [src]="podcast().imageUrl" [alt]="podcast().imageAlt">
+    <button mat-fab aria-label="Odtwórz odcinek">
+      <mat-icon fontSet="material-icons-outlined">play_arrow</mat-icon>
+    </button>
+  </div>
+  <div class="podcast__copy">
+    <span class="eyebrow">Nowy odcinek</span>
+    <h2>{{ podcast().title }}</h2>
+    <a [routerLink]="['/post', podcast().slug]">Słuchaj / czytaj teraz →</a>
+  </div>
+  <div class="podcast__episodes">
+    <span>Ostatnie odcinki</span>
+    @for (episode of episodes(); track episode.id) {
+      <a [routerLink]="['/post', episode.slug]">
+        <span>{{ episode.title }}</span>
+        <strong>{{ episode.date | date:'d MMM y':'':'pl' }}</strong>
+      </a>
+    } @empty {
+      <p>Brak starszych odcinków w aktualnie pobranej puli.</p>
+    }
+  </div>
+</section>

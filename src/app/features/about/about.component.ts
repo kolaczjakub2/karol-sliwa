@@ -1,43 +1,28 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { SeoService } from '../../core/services/seo.service';
-
-interface TimelineItem {
-  period: string;
-  title: string;
-  description: string;
-}
-
-interface Highlight {
-  value: string;
-  label: string;
-}
-
-interface FeatureCard {
-  icon: string;
-  kicker: string;
-  title: string;
-  description: string;
-}
-
-interface EventCard {
-  year: string;
-  title: string;
-  place: string;
-}
-
-interface SocialLink {
-  label: string;
-  href: string;
-  icon: string;
-}
+import { AboutContactComponent } from './components/about-contact/about-contact.component';
+import { AboutEventsComponent } from './components/about-events/about-events.component';
+import { AboutFeatureWallComponent } from './components/about-feature-wall/about-feature-wall.component';
+import { AboutHeroComponent } from './components/about-hero/about-hero.component';
+import { AboutHighlightsComponent } from './components/about-highlights/about-highlights.component';
+import { AboutOffCourtComponent } from './components/about-off-court/about-off-court.component';
+import { AboutStoryComponent } from './components/about-story/about-story.component';
+import { AboutTimelineComponent } from './components/about-timeline/about-timeline.component';
+import { EventCard, FeatureCard, Highlight, SocialLink, TimelineItem } from './models/about-page.model';
 
 @Component({
   selector: 'ks-about',
   standalone: true,
-  imports: [RouterLink, MatButtonModule, MatIconModule],
+  imports: [
+    AboutHeroComponent,
+    AboutHighlightsComponent,
+    AboutFeatureWallComponent,
+    AboutStoryComponent,
+    AboutEventsComponent,
+    AboutTimelineComponent,
+    AboutOffCourtComponent,
+    AboutContactComponent
+  ],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })

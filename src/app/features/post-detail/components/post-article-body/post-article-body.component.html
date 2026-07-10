@@ -1,0 +1,12 @@
+<figure class="hero-image">
+  <img [src]="article().imageUrl" [alt]="article().imageAlt">
+</figure>
+
+<div class="article-layout">
+  <aside class="article-tools" aria-label="Narzędzia artykułu">
+    <span>Czytaj</span>
+    <a href="#komentarze" (click)="commentsLinkClicked.emit($event)">Komentarze</a>
+  </aside>
+
+  <section class="content" [innerHTML]="article().contentHtml"></section>
+</div>

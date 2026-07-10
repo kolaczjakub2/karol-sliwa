@@ -1,0 +1,13 @@
+@mixin text-markers {
+  .back-link,
+  .eyebrow {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .back-link { color: var(--color-muted); }
+  .eyebrow { color: var(--color-orange); }
+}

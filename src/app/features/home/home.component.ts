@@ -1,22 +1,17 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
-import { DatePipe, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatChipsModule } from '@angular/material/chips';
 import { WordPressService } from '../../core/services/wordpress.service';
 import { PostViewModel } from '../../core/models/wp-post.model';
-import { ArticleCardComponent } from '../../shared/components/article-card/article-card.component';
-import { CategoryTileComponent } from '../../shared/components/category-tile/category-tile.component';
 import { SeoService } from '../../core/services/seo.service';
-
-interface FormatTile {
-  icon: string;
-  title: string;
-  description: string;
-}
+import { HomeAuthorComponent } from './components/home-author/home-author.component';
+import { HomeHeroComponent } from './components/home-hero/home-hero.component';
+import { HomeLatestComponent } from './components/home-latest/home-latest.component';
+import { HomePodcastComponent } from './components/home-podcast/home-podcast.component';
+import { HomeTopicsComponent } from './components/home-topics/home-topics.component';
+import { FormatTile, HeroDirection } from './models/home-section.model';
 
 const LATEST_POSTS_LIMIT = 8;
 const HOME_POSTS_POOL_SIZE = 64;
@@ -26,14 +21,13 @@ const HOME_POSTS_POOL_SIZE = 64;
   standalone: true,
   imports: [
     RouterLink,
-    DatePipe,
-    NgClass,
     MatButtonModule,
-    MatIconModule,
     MatProgressSpinnerModule,
-    MatChipsModule,
-    ArticleCardComponent,
-    CategoryTileComponent
+    HomeHeroComponent,
+    HomeTopicsComponent,
+    HomeLatestComponent,
+    HomePodcastComponent,
+    HomeAuthorComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -48,7 +42,7 @@ export class HomeComponent {
   readonly error = signal<string | null>(null);
   readonly activeFilter = signal('Wszystko');
   readonly heroIndex = signal(0);
-  readonly heroDirection = signal<'next' | 'prev'>('next');
+  readonly heroDirection = signal<HeroDirection>('next');
   readonly heroPaused = signal(false);
 
   readonly heroPosts = computed(() => {
@@ -79,7 +73,9 @@ export class HomeComponent {
 
   readonly latestPosts = computed(() => this.posts().slice(0, LATEST_POSTS_LIMIT));
   readonly podcastPosts = computed(() => this.posts().filter((post) => post.topicNames.includes('Podcast')));
-  readonly podcastPost = computed(() => this.podcastPosts().at(0) ?? this.findPostByKeyword(['podcast', 'small talk', 'nba small talk']) ?? this.remainingPosts().at(0));
+  readonly podcastPost = computed(
+    () => this.podcastPosts().at(0) ?? this.findPostByKeyword(['podcast', 'small talk', 'nba small talk']) ?? this.remainingPosts().at(0)
+  );
   readonly recentPodcastPosts = computed(() => {
     const currentPodcastId = this.podcastPost()?.id;
     return this.podcastPosts()
@@ -149,40 +145,6 @@ export class HomeComponent {
 
   setHeroPaused(paused: boolean): void {
     this.heroPaused.set(paused);
-  }
-
-  heroNumber(index: number): string {
-    return String(index + 1).padStart(2, '0');
-  }
-
-  heroImage(post: PostViewModel): string {
-    return post.hasFeaturedImage ? post.imageUrl : 'assets/hero-fallback.svg';
-  }
-
-  heroImageClass(post: PostViewModel): Record<string, boolean> {
-    return {
-      'is-fallback': !post.hasFeaturedImage
-    };
-  }
-
-  heroSummary(post: PostViewModel): string {
-    return this.truncate(post.excerptText, 210);
-  }
-
-  heroBackdropLabel(post: PostViewModel): string {
-    const haystack = `${post.title} ${post.topicNames.join(' ')}`.toLowerCase();
-
-    if (haystack.includes('small talk') || haystack.includes('podcast')) return 'NBA\nTALK';
-    return 'NBA\nNEWS';
-  }
-
-  primaryCategory(post: PostViewModel): string {
-    return post.topicNames.at(0) ?? 'NBA';
-  }
-
-  private truncate(value: string, maxLength: number): string {
-    if (value.length <= maxLength) return value;
-    return `${value.slice(0, maxLength).trim()}…`;
   }
 
   setFilter(filter: string): void {

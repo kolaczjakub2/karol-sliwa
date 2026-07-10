@@ -1,0 +1,9 @@
+@mixin eyebrow {
+  .eyebrow {
+    color: var(--color-orange);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+}

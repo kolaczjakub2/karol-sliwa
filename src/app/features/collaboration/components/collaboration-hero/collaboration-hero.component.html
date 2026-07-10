@@ -1,0 +1,29 @@
+<section class="collab-hero">
+  <div class="collab-hero__copy">
+    <a class="back-link" routerLink="/">← Strona główna</a>
+    <span class="eyebrow">Współpraca</span>
+    <h1>Miejsce na Twoją reklamę.</h1>
+    <p>
+      Chcesz zareklamować się na stronie Karol Mówi albo zrobić wspólną akcję
+      dla ludzi od NBA? Pogadajmy. W grę wchodzi każda forma współpracy,
+      z podkreśleniem słowa każda.
+    </p>
+    <div class="collab-hero__actions">
+      <a class="primary-cta" [href]="'mailto:' + email()">
+        Napisz do Karola
+        <mat-icon fontSet="material-icons-outlined">arrow_forward</mat-icon>
+      </a>
+      <a class="text-link" routerLink="/o-mnie">Poznaj autora →</a>
+    </div>
+  </div>
+
+  <aside class="ad-pass" aria-label="Miejsce na reklamę">
+    <span>Karol Mówi</span>
+    <strong>Twoja marka przy NBA</strong>
+    <p>Jednorazowa akcja, dłuższa współpraca, podcast, tekst, konkurs albo coś, czego jeszcze nie nazwaliśmy.</p>
+    <a [href]="'mailto:' + email()">
+      {{ email() }}
+      <mat-icon fontSet="material-icons-outlined">mail</mat-icon>
+    </a>
+  </aside>
+</section>

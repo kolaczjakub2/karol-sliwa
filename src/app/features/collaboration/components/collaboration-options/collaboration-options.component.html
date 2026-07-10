@@ -1,0 +1,16 @@
+<section class="cooperation-options">
+  <header class="section-heading">
+    <span class="eyebrow">Możliwości</span>
+    <h2>Nie tylko baner. Chodzi o pomysł.</h2>
+  </header>
+
+  <div class="cooperation-options__grid">
+    @for (option of options(); track option.title) {
+      <article>
+        <mat-icon fontSet="material-icons-outlined">{{ option.icon }}</mat-icon>
+        <h3>{{ option.title }}</h3>
+        <p>{{ option.description }}</p>
+      </article>
+    }
+  </div>
+</section>

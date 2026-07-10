@@ -1,18 +1,22 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
 import { SeoService } from '../../core/services/seo.service';
-
-interface CooperationOption {
-  icon: string;
-  title: string;
-  description: string;
-}
+import { CollaborationContactComponent } from './components/collaboration-contact/collaboration-contact.component';
+import { CollaborationHeroComponent } from './components/collaboration-hero/collaboration-hero.component';
+import { CollaborationOptionsComponent } from './components/collaboration-options/collaboration-options.component';
+import { CollaborationPromisesComponent } from './components/collaboration-promises/collaboration-promises.component';
+import { CollaborationTrustedComponent } from './components/collaboration-trusted/collaboration-trusted.component';
+import { CooperationOption, PromiseItem } from './models/collaboration-page.model';
 
 @Component({
   selector: 'ks-collaboration',
   standalone: true,
-  imports: [RouterLink, MatIconModule],
+  imports: [
+    CollaborationHeroComponent,
+    CollaborationPromisesComponent,
+    CollaborationOptionsComponent,
+    CollaborationTrustedComponent,
+    CollaborationContactComponent
+  ],
   templateUrl: './collaboration.component.html',
   styleUrl: './collaboration.component.scss'
 })
@@ -21,6 +25,12 @@ export class CollaborationComponent {
 
   readonly email = 'karolsli@wp.pl';
   readonly brands = ['Tissot', 'Unibet', 'New Balance', 'Decathlon', 'Tarmak', 'Converse', 'Reebok', 'Sklep Koszykarza', 'Wydawnictwo SQN', 'Compressport'];
+  readonly promises: PromiseItem[] = [
+    { value: 'Od 2006', label: 'ciągłość i rozpoznawalność' },
+    { value: 'NBA', label: 'jasny kontekst odbiorców' },
+    { value: 'Podcast', label: 'formaty tekstowe i audio' },
+    { value: 'Bez szablonu', label: 'pomysł ważniejszy niż pakiet' }
+  ];
   readonly options: CooperationOption[] = [
     {
       icon: 'campaign',

@@ -1,0 +1,18 @@
+<section class="timeline" aria-labelledby="timeline-title">
+  <div class="section-heading">
+    <span class="eyebrow">Droga</span>
+    <h2 id="timeline-title">Koszykarski wyciąg z CV</h2>
+  </div>
+
+  <div class="timeline__list">
+    @for (item of timeline(); track item.period + item.title) {
+      <article>
+        <span>{{ item.period }}</span>
+        <div>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      </article>
+    }
+  </div>
+</section>

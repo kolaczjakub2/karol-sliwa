@@ -1,0 +1,28 @@
+<section class="about-hero">
+  <div class="about-hero__copy">
+    <a class="back-link" routerLink="/">← Strona główna</a>
+    <span class="eyebrow">O autorze</span>
+    <h1>Karol Śliwa</h1>
+    <p>
+      Dziennikarz koszykarski, autor Karol Mówi, sędzia i człowiek od NBA.
+      Od 2006 roku opisuje ligę własnym głosem: z parkietu, trybun, sal prasowych
+      i wysp między Szwecją a Finlandią.
+    </p>
+    <div class="about-hero__actions">
+      <a class="about-hero__contact" href="mailto:karolsli@wp.pl">
+        Kontakt
+        <mat-icon fontSet="material-icons-outlined">mail</mat-icon>
+      </a>
+      <a class="text-link" routerLink="/archiwum">Czytaj archiwum →</a>
+    </div>
+  </div>
+
+  <aside class="press-card" aria-label="Profil autora">
+    <span class="press-card__tag">Since 2006</span>
+    <img [src]="portraitUrl()" alt="Karol Śliwa" loading="eager">
+    <div class="press-card__caption">
+      <span>Karol Mówi</span>
+      <strong>NBA / FIBA / Podcast</strong>
+    </div>
+  </aside>
+</section>

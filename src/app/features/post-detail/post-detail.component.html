@@ -4,181 +4,21 @@
   <section class="state state--error">{{ error() }}</section>
 } @else if (post(); as article) {
   <article class="article">
-    <header class="article__header">
-      <a routerLink="/" class="back-link">← Wróć na stronę główną</a>
-      <span class="eyebrow">{{ article.topicNames[0] || 'NBA' }}</span>
-      <h1>{{ article.title }}</h1>
-      <div class="meta">
-        @if (article.authorAvatar) {
-          <img [src]="article.authorAvatar" alt="" loading="lazy">
-        }
-        <strong>{{ article.authorName }}</strong>
-        <span>•</span>
-        <span>{{ article.date | date:'d MMM y':'':'pl' }}</span>
-        <span>•</span>
-        <span>{{ article.readTime }} min czytania</span>
-      </div>
-    </header>
-
-    <figure class="hero-image">
-      <img [src]="article.imageUrl" [alt]="article.imageAlt">
-    </figure>
-
-    <div class="article-layout">
-      <aside class="article-tools" aria-label="Narzędzia artykułu">
-        <span>Czytaj</span>
-        <a href="#komentarze" (click)="scrollToComments($event)">Komentarze</a>
-      </aside>
-
-      <section class="content" [innerHTML]="article.contentHtml"></section>
-    </div>
-
-    <section class="comments" id="komentarze" aria-labelledby="comments-title">
-      <div class="comments__header">
-        <span class="eyebrow">Dyskusja</span>
-        <h2 id="comments-title">Komentarze</h2>
-        <p>
-          Dołącz do rozmowy pod artykułem. Odpowiedzi są układane w wątki,
-          dzięki czemu łatwo śledzić, kto komu odpowiada.
-        </p>
-      </div>
-
-      <div class="comments__body">
-        <div class="comments__list" aria-live="polite">
-          @if (commentsLoading()) {
-            <div class="comments__state">
-              <mat-spinner diameter="34" />
-              <span>Ładowanie komentarzy...</span>
-            </div>
-          } @else if (commentsError()) {
-            <div class="comments__state comments__state--error">
-              <mat-icon fontSet="material-icons-outlined">error_outline</mat-icon>
-              <span>{{ commentsError() }}</span>
-            </div>
-          } @else if (commentRows().length) {
-            @for (row of commentRows(); track row.comment.id) {
-              <article
-                class="comment-card"
-                [class.comment-card--reply]="row.depth > 0"
-                [class.comment-card--pending]="row.comment.isPending"
-                [style.--comment-depth]="row.depth"
-              >
-                <div class="comment-card__avatar">
-                  @if (row.comment.authorAvatar) {
-                    <img [src]="row.comment.authorAvatar" alt="" loading="lazy">
-                  } @else {
-                    <mat-icon fontSet="material-icons-outlined">person</mat-icon>
-                  }
-                </div>
-                <div class="comment-card__content">
-                  <header>
-                    <strong>{{ row.comment.authorName }}</strong>
-                    <span>{{ row.comment.date | date:'d MMM y, HH:mm':'':'pl' }}</span>
-                    @if (row.parentName) {
-                      <span class="comment-card__parent">odpowiedź do {{ row.parentName }}</span>
-                    }
-                    @if (row.comment.isPending) {
-                      <em>oczekuje na moderację</em>
-                    }
-                  </header>
-                  <div class="comment-card__text" [innerHTML]="row.comment.contentHtml"></div>
-                  <button type="button" class="comment-card__reply-button" (click)="startReply(row.comment)">
-                    <svg class="comment-card__reply-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <path d="M10.5 6.5 5 12l5.5 5.5v-3.4h4.2c2.4 0 4.3 1.1 5.3 3.3-.2-4.2-2.3-7.7-6.8-7.7h-2.7V6.5Z" />
-                    </svg>
-                    <span>Odpowiedz</span>
-                  </button>
-                </div>
-              </article>
-            }
-          } @else {
-            <div class="comments__empty">
-              <mat-icon fontSet="material-icons-outlined">chat_bubble_outline</mat-icon>
-              <strong>Brak komentarzy pod tym wpisem</strong>
-              <span>Bądź pierwszą osobą, która rozpocznie dyskusję.</span>
-            </div>
-          }
-        </div>
-
-        <form id="comment-form" class="comment-form" [formGroup]="commentForm" (ngSubmit)="submitComment(article)">
-          <span class="comment-form__label">Dodaj komentarz</span>
-          <h3>Dołącz do rozmowy</h3>
-
-          @if (commentNotice()) {
-            <div class="comment-form__notice">
-              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
-              <span>{{ commentNotice() }}</span>
-            </div>
-          }
-
-          @if (replyingTo(); as parentComment) {
-            <div class="comment-form__replying">
-              <div>
-                <span>Odpowiadasz na komentarz</span>
-                <strong>{{ parentComment.authorName }}</strong>
-              </div>
-              <button mat-icon-button type="button" aria-label="Anuluj odpowiedź" (click)="cancelReply()">
-                <mat-icon fontSet="material-icons-outlined">close</mat-icon>
-              </button>
-            </div>
-          }
-
-          <mat-form-field appearance="outline">
-            <mat-label>Imię / podpis</mat-label>
-            <input matInput formControlName="authorName" autocomplete="name">
-            @if (commentForm.controls.authorName.hasError('required')) {
-              <mat-error>Podaj imię lub podpis.</mat-error>
-            }
-            @if (commentForm.controls.authorName.hasError('minlength')) {
-              <mat-error>Podpis musi mieć minimum 2 znaki.</mat-error>
-            }
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="authorEmail" type="email" autocomplete="email">
-            <mat-hint>Email nie będzie pokazany publicznie.</mat-hint>
-            @if (commentForm.controls.authorEmail.hasError('required')) {
-              <mat-error>Podaj adres email.</mat-error>
-            }
-            @if (commentForm.controls.authorEmail.hasError('email')) {
-              <mat-error>Podaj poprawny adres email.</mat-error>
-            }
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Strona WWW, opcjonalnie</mat-label>
-            <input matInput formControlName="authorUrl" type="url" autocomplete="url">
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="comment-form__textarea">
-            <mat-label>Komentarz</mat-label>
-            <textarea matInput formControlName="content" rows="7"></textarea>
-            <mat-hint align="end">{{ commentForm.controls.content.value.length }}/3000</mat-hint>
-            @if (commentForm.controls.content.hasError('required')) {
-              <mat-error>Wpisz treść komentarza.</mat-error>
-            }
-            @if (commentForm.controls.content.hasError('minlength')) {
-              <mat-error>Komentarz musi mieć minimum 5 znaków.</mat-error>
-            }
-          </mat-form-field>
-
-          <button mat-flat-button type="submit" [disabled]="submittingComment()">
-            <mat-icon fontSet="material-icons-outlined" class="comment-form__submit-icon" [class.is-hidden]="submittingComment()">send</mat-icon>
-            @if (submittingComment()) {
-              <mat-spinner diameter="18" />
-              <span>Wysyłanie...</span>
-            } @else {
-              <span>{{ replyingTo() ? 'Opublikuj odpowiedź' : 'Opublikuj komentarz' }}</span>
-            }
-          </button>
-
-          <p class="comment-form__smallprint">
-            Po wysłaniu komentarz może pojawić się od razu albo po akceptacji — zależnie od ustawień moderacji.
-          </p>
-        </form>
-      </div>
-    </section>
+    <ks-post-article-header [article]="article" />
+    <ks-post-article-body [article]="article" (commentsLinkClicked)="scrollToComments($event)" />
+    <ks-post-comments
+      [article]="article"
+      [rows]="commentRows()"
+      [loading]="commentsLoading()"
+      [error]="commentsError()"
+      [form]="commentForm"
+      [submitting]="submittingComment()"
+      [notice]="commentNotice()"
+      [replyingTo]="replyingTo()"
+      (replyStarted)="startReply($event)"
+      (replyCanceled)="cancelReply()"
+      (submitted)="submitComment($event)"
+    />
   </article>
 } @else {
   <section class="state">Nie znaleziono wpisu.</section>

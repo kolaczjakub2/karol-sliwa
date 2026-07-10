@@ -1,21 +1,20 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ArticleCardComponent } from '../../shared/components/article-card/article-card.component';
 import { PostViewModel } from '../../core/models/wp-post.model';
 import { WordPressService } from '../../core/services/wordpress.service';
 import { SeoService } from '../../core/services/seo.service';
+import { ArchiveHeroComponent } from './components/archive-hero/archive-hero.component';
+import { ArchivePaginatorComponent } from './components/archive-paginator/archive-paginator.component';
 
 const ARCHIVE_FILTER_POOL_SIZE = 100;
 
 @Component({
   selector: 'ks-archive',
   standalone: true,
-  imports: [FormsModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, ArticleCardComponent],
+  imports: [MatProgressSpinnerModule, ArticleCardComponent, ArchiveHeroComponent, ArchivePaginatorComponent],
   templateUrl: './archive.component.html',
   styleUrl: './archive.component.scss'
 })

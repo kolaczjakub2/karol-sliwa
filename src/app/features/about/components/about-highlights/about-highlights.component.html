@@ -1,0 +1,8 @@
+<section class="highlights" aria-label="Najważniejsze liczby">
+  @for (highlight of highlights(); track highlight.value) {
+    <article>
+      <strong>{{ highlight.value }}</strong>
+      <span>{{ highlight.label }}</span>
+    </article>
+  }
+</section>

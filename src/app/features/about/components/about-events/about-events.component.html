@@ -1,0 +1,16 @@
+<section class="events" aria-labelledby="events-title">
+  <div class="section-heading">
+    <span class="eyebrow">Relacje</span>
+    <h2 id="events-title">Duże imprezy, prawdziwe akredytacje</h2>
+  </div>
+
+  <div class="events__grid">
+    @for (event of events(); track event.title + event.year) {
+      <article>
+        <span>{{ event.year }}</span>
+        <h3>{{ event.title }}</h3>
+        <p>{{ event.place }}</p>
+      </article>
+    }
+  </div>
+</section>

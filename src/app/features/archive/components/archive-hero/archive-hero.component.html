@@ -1,0 +1,19 @@
+<section class="archive-hero">
+  <span class="eyebrow">Archiwum</span>
+  <h1>Archiwum tekstów</h1>
+  <p>Wyszukuj teksty, analizy i felietony w uporządkowanym archiwum.</p>
+
+  <div class="archive-toolbar">
+    <label class="search-field">
+      <span>Szukaj wpisów</span>
+      <mat-icon fontSet="material-icons-outlined">search</mat-icon>
+      <input type="search" [ngModel]="searchTerm()" (ngModelChange)="searchChange.emit($event)" placeholder="np. draft, Knicks, Jokic">
+    </label>
+
+    <div class="filters" aria-label="Filtruj wpisy">
+      @for (filter of filterOptions(); track filter) {
+        <button type="button" [class.is-active]="activeFilter() === filter" (click)="filterChange.emit(filter)">{{ filter }}</button>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+<header class="article__header">
+  <a routerLink="/" class="back-link">← Wróć na stronę główną</a>
+  <span class="eyebrow">{{ article().topicNames[0] || 'NBA' }}</span>
+  <h1>{{ article().title }}</h1>
+  <div class="meta">
+    @if (article().authorAvatar) {
+      <img [src]="article().authorAvatar" alt="" loading="lazy">
+    }
+    <strong>{{ article().authorName }}</strong>
+    <span>•</span>
+    <span>{{ article().date | date:'d MMM y':'':'pl' }}</span>
+    <span>•</span>
+    <span>{{ article().readTime }} min czytania</span>
+  </div>
+</header>

@@ -1,0 +1,99 @@
+:host {
+  display: block;
+}
+
+.archive-paginator {
+  min-height: 66px;
+  margin-top: var(--space-7);
+  padding: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--gradient-card-soft);
+  color: var(--color-text);
+
+  &__meta,
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  &__meta {
+    flex-wrap: wrap;
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+
+    label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    select {
+      height: 38px;
+      min-width: 72px;
+      padding: 0 34px 0 var(--space-3);
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      color: var(--color-text);
+      background: var(--color-control-bg);
+      outline: 0;
+      cursor: pointer;
+    }
+  }
+
+  &__controls {
+    button {
+      width: 38px;
+      height: 38px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--color-border);
+      border-radius: 50%;
+      color: var(--color-text);
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 900;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, opacity 180ms ease;
+
+      mat-icon {
+        font-size: 21px;
+        width: 21px;
+        height: 21px;
+      }
+
+      &.is-active,
+      &:not(:disabled):hover {
+        border-color: var(--color-orange);
+        background: var(--color-orange);
+        color: var(--color-on-accent);
+        transform: translateY(-1px);
+      }
+
+      &:disabled {
+        opacity: 0.42;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+@media (max-width: 620px) {
+  .archive-paginator {
+    align-items: stretch;
+    flex-direction: column;
+
+    &__meta,
+    &__controls {
+      justify-content: space-between;
+    }
+  }
+}

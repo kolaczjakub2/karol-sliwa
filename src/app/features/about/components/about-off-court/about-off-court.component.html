@@ -1,0 +1,20 @@
+<section class="off-court">
+  <article>
+    <span class="eyebrow">Poza basketem</span>
+    <h2>Mapy, historia, polityka i parę innych obsesji.</h2>
+    <p>
+      Poza koszykówką interesuje się polityką, geografią, podróżami, mapami
+      hipsometrycznymi, historią niewolnictwa w Stanach Zjednoczonych, starożytnym
+      Egiptem i wszystkim, co potrafi uruchomić dobrą rozmowę.
+    </p>
+  </article>
+
+  <nav class="social-grid" aria-label="Profile społecznościowe">
+    @for (link of socialLinks(); track link.href) {
+      <a [href]="link.href" target="_blank" rel="noopener">
+        <mat-icon fontSet="material-icons-outlined">{{ link.icon }}</mat-icon>
+        <span>{{ link.label }}</span>
+      </a>
+    }
+  </nav>
+</section>

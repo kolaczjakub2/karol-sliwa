@@ -1,42 +1,27 @@
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommentViewModel, PostViewModel } from '../../core/models/wp-post.model';
 import { WordPressService } from '../../core/services/wordpress.service';
 import { SeoService } from '../../core/services/seo.service';
-
-interface CommentThreadNode extends CommentViewModel {
-  children: CommentThreadNode[];
-}
-
-interface CommentRow {
-  comment: CommentThreadNode;
-  depth: number;
-  parentName?: string;
-}
+import { PostArticleBodyComponent } from './components/post-article-body/post-article-body.component';
+import { PostArticleHeaderComponent } from './components/post-article-header/post-article-header.component';
+import { PostCommentsComponent } from './components/post-comments/post-comments.component';
+import { CommentForm, CommentRow, CommentThreadNode } from './models/comment-thread.model';
 
 @Component({
   selector: 'ks-post-detail',
   standalone: true,
   imports: [
-    DatePipe,
-    RouterLink,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    PostArticleHeaderComponent,
+    PostArticleBodyComponent,
+    PostCommentsComponent
   ],
   templateUrl: './post-detail.component.html',
   styleUrl: './post-detail.component.scss'
@@ -61,7 +46,7 @@ export class PostDetailComponent {
   readonly commentNotice = signal<string | null>(null);
   readonly replyingTo = signal<CommentViewModel | null>(null);
 
-  readonly commentForm = this.fb.group({
+  readonly commentForm: CommentForm = this.fb.group({
     authorName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(80)]],
     authorEmail: ['', [Validators.required, Validators.email, Validators.maxLength(120)]],
     authorUrl: ['', [Validators.maxLength(180)]],

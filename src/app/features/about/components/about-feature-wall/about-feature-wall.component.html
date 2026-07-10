@@ -1,0 +1,10 @@
+<section class="feature-wall" aria-label="Najważniejsze obszary">
+  @for (card of cards(); track card.title) {
+    <article class="feature-card">
+      <mat-icon fontSet="material-icons-outlined">{{ card.icon }}</mat-icon>
+      <span>{{ card.kicker }}</span>
+      <h2>{{ card.title }}</h2>
+      <p>{{ card.description }}</p>
+    </article>
+  }
+</section>

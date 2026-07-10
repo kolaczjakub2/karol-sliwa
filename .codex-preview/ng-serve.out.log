@@ -1,0 +1,115 @@
+> Building...
+√ Building...
+Initial chunk files | Names                   |  Raw size
+main.js             | main                    |  49.05 kB | 
+styles.css          | styles                  |  14.39 kB | 
+chunk-VUJOFXKG.js   | -                       | 938 bytes | 
+polyfills.js        | polyfills               |  95 bytes | 
+
+                    | Initial total           |  64.47 kB
+
+Lazy chunk files    | Names                   |  Raw size
+chunk-WWWILETV.js   | home-component          | 117.66 kB | 
+chunk-U5BRFTMH.js   | post-detail-component   |  70.01 kB | 
+chunk-M4ENHT5M.js   | about-component         |  58.40 kB | 
+chunk-HJMAAIP2.js   | collaboration-component |  36.00 kB | 
+chunk-Z6XCH4IV.js   | archive-component       |  32.13 kB | 
+chunk-HXG2NVOD.js   | -                       |  15.16 kB | 
+chunk-7DSSHAXF.js   | -                       |   7.14 kB | 
+chunk-XDCVX6ES.js   | -                       |   6.88 kB | 
+
+Application bundle generation complete. [2.660 seconds] - 2026-07-10T20:41:11.837Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m4202[22m/[39m
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names           | Raw size
+main.js             | main            | 49.05 kB | 
+
+Lazy chunk files    | Names           | Raw size
+chunk-Y4IWRWC5.js   | about-component | 85.86 kB | 
+
+Application bundle generation complete. [1.388 seconds] - 2026-07-10T21:49:23.553Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                   | Raw size
+main.js             | main                    | 49.05 kB | 
+
+Lazy chunk files    | Names                   | Raw size
+chunk-TI5XVSBH.js   | collaboration-component | 56.87 kB | 
+
+Application bundle generation complete. [0.739 seconds] - 2026-07-10T21:51:39.942Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names             | Raw size
+main.js             | main              | 49.05 kB | 
+
+Lazy chunk files    | Names             | Raw size
+chunk-XHPI4FJI.js   | archive-component | 42.66 kB | 
+
+Application bundle generation complete. [0.676 seconds] - 2026-07-10T21:53:02.576Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                 | Raw size
+main.js             | main                  | 49.05 kB | 
+
+Lazy chunk files    | Names                 | Raw size
+chunk-W4UQJYRP.js   | post-detail-component | 82.81 kB | 
+
+Application bundle generation complete. [0.813 seconds] - 2026-07-10T21:55:53.962Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                   |  Raw size
+main.js             | main                    |  49.05 kB | 
+styles.css          | styles                  |  14.39 kB | 
+chunk-VUJOFXKG.js   | -                       | 938 bytes | 
+polyfills.js        | polyfills               |  95 bytes | 
+
+                    | Initial total           |  64.47 kB
+
+Lazy chunk files    | Names                   |  Raw size
+chunk-WWWILETV.js   | home-component          | 117.66 kB | 
+chunk-Y4IWRWC5.js   | about-component         |  85.86 kB | 
+chunk-W4UQJYRP.js   | post-detail-component   |  82.81 kB | 
+chunk-TI5XVSBH.js   | collaboration-component |  56.87 kB | 
+chunk-XHPI4FJI.js   | archive-component       |  42.66 kB | 
+chunk-HXG2NVOD.js   | -                       |  15.16 kB | 
+chunk-7DSSHAXF.js   | -                       |   7.14 kB | 
+chunk-XDCVX6ES.js   | -                       |   6.88 kB | 
+
+Application bundle generation complete. [0.005 seconds] - 2026-07-10T21:56:26.508Z
+
+Page reload sent to client(s).
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names                   |  Raw size
+main.js             | main                    |  49.05 kB | 
+styles.css          | styles                  |  14.39 kB | 
+chunk-VUJOFXKG.js   | -                       | 938 bytes | 
+polyfills.js        | polyfills               |  95 bytes | 
+
+                    | Initial total           |  64.47 kB
+
+Lazy chunk files    | Names                   |  Raw size
+chunk-WWWILETV.js   | home-component          | 117.66 kB | 
+chunk-Y4IWRWC5.js   | about-component         |  85.86 kB | 
+chunk-W4UQJYRP.js   | post-detail-component   |  82.81 kB | 
+chunk-TI5XVSBH.js   | collaboration-component |  56.87 kB | 
+chunk-XHPI4FJI.js   | archive-component       |  42.66 kB | 
+chunk-HXG2NVOD.js   | -                       |  15.16 kB | 
+chunk-7DSSHAXF.js   | -                       |   7.14 kB | 
+chunk-XDCVX6ES.js   | -                       |   6.88 kB | 
+
+Application bundle generation complete. [0.004 seconds] - 2026-07-10T21:56:45.827Z
+
+Page reload sent to client(s).
