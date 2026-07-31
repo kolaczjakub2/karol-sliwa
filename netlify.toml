@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "dist/karol-sliwa-angular-redesign/browser"
+
+[images]
+  remote_images = ["https://karolsliwa\\.com/wp-content/uploads/.*"]
+
+[[plugins]]
+  package = "@netlify/angular-runtime"

@@ -1,4 +1,5 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, DestroyRef, RESPONSE_INIT, afterNextRender, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
@@ -28,11 +29,14 @@ import { CommentForm, CommentRow, CommentThreadNode } from './models/comment-thr
 })
 export class PostDetailComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly document = inject(DOCUMENT);
+  private readonly responseInit = inject(RESPONSE_INIT);
   private readonly wp = inject(WordPressService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly fb = inject(FormBuilder).nonNullable;
   private readonly snackBar = inject(MatSnackBar);
+  private loadCommentsAfterRender = false;
 
   readonly post = signal<PostViewModel | null>(null);
   readonly loading = signal(true);
@@ -54,6 +58,11 @@ export class PostDetailComponent {
   });
 
   constructor() {
+    afterNextRender(() => {
+      const post = this.post();
+      if (post && this.loadCommentsAfterRender) this.loadComments(post.id);
+    });
+
     this.route.paramMap.pipe(
       switchMap((params) => {
         this.loading.set(true);
@@ -69,20 +78,23 @@ export class PostDetailComponent {
 
         if (post) {
           this.seo.setArticle(post);
-          this.loadComments(post.id);
+          this.loadCommentsAfterRender = true;
         } else {
+          if (this.responseInit) this.responseInit.status = 404;
           this.seo.setPage({
-            title: 'Nie znaleziono artykulu | Karol Mowi',
-            description: 'Nie znaleziono artykulu na stronie Karol Mowi.',
-            path: this.route.snapshot.url.map((segment) => segment.path).join('/')
+            title: 'Nie znaleziono artykułu | Karol Mówi',
+            description: 'Nie znaleziono artykułu na stronie Karol Mówi.',
+            path: this.route.snapshot.url.map((segment) => segment.path).join('/'),
+            noIndex: true
           });
         }
       },
       error: (error: Error) => {
         this.seo.setPage({
-          title: 'Blad ladowania artykulu | Karol Mowi',
-          description: 'Nie udalo sie pobrac artykulu z archiwum Karol Mowi.',
-          path: this.route.snapshot.url.map((segment) => segment.path).join('/')
+          title: 'Błąd ładowania artykułu | Karol Mówi',
+          description: 'Nie udało się pobrać artykułu z archiwum Karol Mówi.',
+          path: this.route.snapshot.url.map((segment) => segment.path).join('/'),
+          noIndex: true
         });
         this.error.set(error.message);
         this.loading.set(false);
@@ -94,8 +106,8 @@ export class PostDetailComponent {
     this.replyingTo.set(comment);
     this.commentNotice.set(null);
 
-    window.setTimeout(() => {
-      document.getElementById('comment-form')?.scrollIntoView({
+    this.document.defaultView?.setTimeout(() => {
+      this.document.getElementById('comment-form')?.scrollIntoView({
         behavior: 'smooth',
         block: 'center'
       });
@@ -109,7 +121,7 @@ export class PostDetailComponent {
   scrollToComments(event: Event): void {
     event.preventDefault();
 
-    document.getElementById('komentarze')?.scrollIntoView({
+    this.document.getElementById('komentarze')?.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
     });

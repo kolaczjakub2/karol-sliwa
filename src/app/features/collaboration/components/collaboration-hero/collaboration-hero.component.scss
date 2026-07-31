@@ -8,7 +8,7 @@
 }
 
 .collab-hero {
-  min-height: 590px;
+  min-height: 520px;
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(380px, 0.92fr);
   gap: var(--space-5);
@@ -23,9 +23,11 @@
 
 .collab-hero__copy {
   position: relative;
-  display: grid;
-  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   justify-items: start;
+  gap: var(--space-4);
   padding: clamp(var(--space-6), 6vw, var(--space-9));
   overflow: hidden;
   background:
@@ -35,12 +37,12 @@
   &::before {
     content: 'AD SPACE';
     position: absolute;
-    right: -0.14em;
-    bottom: -0.12em;
+    right: -0.08em;
+    bottom: -0.08em;
     color: transparent;
     -webkit-text-stroke: 1px var(--outline-stroke);
     font-family: var(--font-display);
-    font-size: clamp(5rem, 12vw, 12rem);
+    font-size: clamp(4rem, 9vw, 8.6rem);
     line-height: 0.8;
     letter-spacing: -0.08em;
     pointer-events: none;
@@ -53,12 +55,12 @@
 
   h1 {
     max-width: 850px;
-    margin: var(--space-3) 0;
+    margin: 0;
     color: var(--color-text);
     font-family: var(--font-display);
-    font-size: clamp(3.7rem, 7.6vw, 8.6rem);
-    line-height: 0.9;
-    letter-spacing: -0.07em;
+    font-size: clamp(3rem, 6vw, 6.2rem);
+    line-height: 0.92;
+    letter-spacing: -0.055em;
     text-transform: uppercase;
   }
 
@@ -76,7 +78,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-4);
-  margin-top: var(--space-6);
+  margin-top: var(--space-2);
 }
 
 .text-link {

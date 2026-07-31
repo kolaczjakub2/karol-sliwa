@@ -1,26 +1,46 @@
-<a class="card" [class.card--compact]="compact()" [routerLink]="['/post', post().slug]">
-  <mat-card appearance="outlined">
+<a class="card" [class.card--compact]="compact()" [routerLink]="['/', post().slug]">
+  <article class="card__surface">
     <div class="image-wrap">
-      <img [src]="post().imageUrl" [alt]="post().imageAlt" loading="lazy">
+      <img
+        [src]="post().imageUrl"
+        [attr.srcset]="post().imageSrcSet || null"
+        sizes="(max-width: 560px) 100vw, (max-width: 1180px) 50vw, 33vw"
+        [alt]="post().imageAlt"
+        [attr.width]="post().imageWidth"
+        [attr.height]="post().imageHeight"
+        loading="lazy"
+        decoding="async"
+      >
     </div>
 
-    <mat-card-content>
+    <div class="card__content">
       <span class="eyebrow">{{ post().topicNames | categoryLabel }}</span>
       <h3>{{ post().title }}</h3>
       @if (!compact()) {
         <p>{{ post().excerptText }}</p>
-        @if (post().excerptHasReadMore) {
+        <div class="card__footer">
           <span class="read-more">
             <span>Czytaj dalej</span>
-            <span class="read-more__icon" aria-hidden="true">&rarr;</span>
+            <span class="read-more__icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" focusable="false">
+                <path d="M3.5 8h8" />
+                <path d="m8.5 4 4 4-4 4" />
+              </svg>
+            </span>
           </span>
-        }
+          <div class="meta">
+            <span>{{ post().date | date:'d MMM y':'':'pl' }}</span>
+            <span>•</span>
+            <span>{{ post().readTime }} min czytania</span>
+          </div>
+        </div>
+      } @else {
+        <div class="meta">
+          <span>{{ post().date | date:'d MMM y':'':'pl' }}</span>
+          <span>•</span>
+          <span>{{ post().readTime }} min czytania</span>
+        </div>
       }
-      <div class="meta">
-        <span>{{ post().date | date:'d MMM y':'':'pl' }}</span>
-        <span>•</span>
-        <span>{{ post().readTime }} min czytania</span>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </article>
 </a>

@@ -14,6 +14,8 @@ export interface WpFeaturedMedia {
   source_url: string;
   alt_text?: string;
   media_details?: {
+    width?: number;
+    height?: number;
     sizes?: Record<string, { source_url: string; width: number; height: number }>;
   };
 }
@@ -33,7 +35,7 @@ export interface WpPost {
   link: string;
   title: WpRenderedField;
   excerpt: WpRenderedField;
-  content: WpRenderedField;
+  content?: WpRenderedField;
   author: number;
   categories: number[];
   _embedded?: {
@@ -58,6 +60,9 @@ export interface PostViewModel {
   authorName: string;
   authorAvatar?: string;
   imageUrl: string;
+  imageSrcSet?: string;
+  imageWidth: number;
+  imageHeight: number;
   imageAlt: string;
   hasFeaturedImage: boolean;
   categoryNames: string[];

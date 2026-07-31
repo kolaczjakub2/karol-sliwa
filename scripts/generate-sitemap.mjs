@@ -2,7 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const SITE_URL = 'https://karol-sliwa-redesign.netlify.app';
+const SITE_URL = 'https://karolsliwa.com';
 const API_URL = 'https://karolsliwa.com/wp-json/wp/v2/posts';
 const OUTPUT_PATH = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'sitemap.xml');
 
@@ -65,7 +65,7 @@ async function writeSitemap(posts) {
       priority: item.priority
     })),
     ...posts.map((post) => ({
-      loc: `${SITE_URL}/post/${post.slug}`,
+      loc: `${SITE_URL}/${post.slug}`,
       lastmod: post.modified,
       changefreq: 'weekly',
       priority: '0.7'

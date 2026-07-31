@@ -1,7 +1,7 @@
 <header class="site-header">
-  <mat-toolbar class="toolbar">
-    <a class="brand" routerLink="/" aria-label="Strona główna Karol Mówi">
-      <img class="brand__ball" src="assets/brand/logo-ball.png" alt="" width="59" height="59" aria-hidden="true">
+  <div class="toolbar">
+    <a class="brand" routerLink="/" aria-label="Karol Mówi, since 2006 — strona główna">
+      <img class="brand__ball" src="assets/brand/logo-ball-favicon.png" alt="" width="64" height="64" aria-hidden="true">
       <span class="brand__wordmark">
         <span>Karol</span>
         <span>Mówi</span>
@@ -11,14 +11,23 @@
 
     <nav class="nav" aria-label="Główna nawigacja">
       @for (item of navItems; track item.label) {
-        <a
-          [routerLink]="item.routerLink"
-          [fragment]="item.fragment"
-          [class.is-active]="isNavItemActive(item)"
-          (click)="handleNavItemClick(item, $event)"
-        >
-          {{ item.label }}
-        </a>
+        @if (item.fragment) {
+          <a
+            [href]="item.routerLink + '#' + item.fragment"
+            [class.is-active]="isNavItemActive(item)"
+            (click)="handleNavItemClick(item, $event)"
+          >
+            {{ item.label }}
+          </a>
+        } @else {
+          <a
+            [routerLink]="item.routerLink"
+            [class.is-active]="isNavItemActive(item)"
+            (click)="handleNavItemClick(item, $event)"
+          >
+            {{ item.label }}
+          </a>
+        }
       }
     </nav>
 
@@ -53,28 +62,91 @@
       </div>
 
       <button
-        mat-icon-button
         class="theme-icon-btn"
         type="button"
         [attr.aria-label]="themeButtonLabel()"
         [title]="themeButtonLabel()"
         (click)="toggleTheme()">
-        <mat-icon fontSet="material-icons-outlined">{{ themeButtonIcon() }}</mat-icon>
+        <span class="header-icon" aria-hidden="true">{{ theme.isLight() ? '☾' : '☀' }}</span>
       </button>
 
       <a class="collab" routerLink="/wspolpraca">Współpraca</a>
-      <button mat-icon-button class="menu-btn" type="button" aria-label="Otwórz menu" (click)="toggleMenu()">
-        <mat-icon fontSet="material-icons-outlined">{{ menuOpen() ? 'close' : 'menu' }}</mat-icon>
+      <button
+        class="menu-btn"
+        type="button"
+        [attr.aria-label]="menuOpen() ? 'Zamknij menu' : 'Otwórz menu'"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="mobile-nav"
+        (click)="toggleMenu()">
+        <span class="header-icon" aria-hidden="true">{{ menuOpen() ? '×' : '☰' }}</span>
+        <span class="header-label">{{ menuOpen() ? 'Zamknij' : 'Menu' }}</span>
       </button>
     </div>
-  </mat-toolbar>
+  </div>
 
   @if (menuOpen()) {
-    <nav class="mobile-nav" aria-label="Menu mobilne">
-      @for (item of mobileNavItems; track item.label) {
-        <a [routerLink]="item.routerLink" [fragment]="item.fragment" (click)="handleNavItemClick(item, $event)">{{ item.label }}</a>
-      }
-      <a routerLink="/wspolpraca" (click)="closeMenu()">Współpraca</a>
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Menu mobilne">
+      <div class="mobile-nav__panel">
+
+        @for (item of mobileNavItems; track item.label) {
+          @if (item.fragment) {
+            <a
+              class="mobile-nav__link"
+              [href]="item.routerLink + '#' + item.fragment"
+              [class.is-active]="isNavItemActive(item)"
+              (click)="handleNavItemClick(item, $event)">
+              <span class="mobile-nav__link-copy">
+                <span class="mobile-nav__link-label">{{ item.label }}</span>
+              </span>
+            </a>
+          } @else {
+            <a
+              class="mobile-nav__link"
+              [routerLink]="item.routerLink"
+              [class.is-active]="isNavItemActive(item)"
+              (click)="handleNavItemClick(item, $event)">
+              <span class="mobile-nav__link-copy">
+                <span class="mobile-nav__link-label">{{ item.label }}</span>
+              </span>
+            </a>
+          }
+        }
+
+        <a class="mobile-nav__link" routerLink="/wspolpraca" [class.is-active]="currentUrl().startsWith('/wspolpraca')" (click)="closeMenu()">
+          <span class="mobile-nav__link-copy">
+            <span class="mobile-nav__link-label">Współpraca</span>
+          </span>
+        </a>
+      </div>
+
+      <div class="mobile-nav__social" aria-label="Social media">
+        @for (link of socialLinks; track link.label) {
+          <a [href]="link.href" target="_blank" rel="noopener noreferrer" [attr.aria-label]="link.label">
+            @switch (link.icon) {
+              @case ('facebook') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M13.6 21v-7.3h2.5l.4-2.9h-2.9V9c0-.8.2-1.4 1.5-1.4h1.6V5c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v1.9H8v2.9h2.5V21h3.1Z"/>
+                </svg>
+              }
+              @case ('instagram') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm4 3.2a3.8 3.8 0 1 1 0 7.6 3.8 3.8 0 0 1 0-7.6Zm0 2a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6Zm4.2-2.7a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
+                </svg>
+              }
+              @case ('x') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4.5 4h3.8l4.1 5.5L17.4 4h2.1l-6.1 6.8L20 20h-3.8l-4.4-6-5.3 6H4.4l6.4-7.3L4.5 4Zm3 1.6 9.6 12.8H17L7.4 5.6h.1Z"/>
+                </svg>
+              }
+              @case ('youtube') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 4.9 12 4.9 12 4.9s-6 0-7.7.4a2.7 2.7 0 0 0-1.9 1.9A27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.7 2.7 0 0 0 1.9 1.9c1.7.4 7.7.4 7.7.4s6 0 7.7-.4a2.7 2.7 0 0 0 1.9-1.9A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8ZM10.2 15.1V8.9l5.4 3.1-5.4 3.1Z"/>
+                </svg>
+              }
+            }
+          </a>
+        }
+      </div>
     </nav>
   }
 </header>

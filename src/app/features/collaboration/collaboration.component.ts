@@ -56,8 +56,8 @@ export class CollaborationComponent {
 
   constructor() {
     this.seo.setPage({
-      title: 'Wspolpraca | Karol Mowi',
-      description: 'Wspolpraca reklamowa, podcastowa i eventowa przy tresciach NBA, koszykowce oraz projektach sportowych.',
+      title: 'Współpraca | Karol Mówi',
+      description: 'Współpraca reklamowa, podcastowa i eventowa przy treściach NBA, koszykówce oraz projektach sportowych.',
       path: '/wspolpraca',
       breadcrumbs: [
         { name: 'Start', path: '/' },

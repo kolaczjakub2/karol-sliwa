@@ -8,7 +8,7 @@
     border-top: 1px solid var(--color-border);
     padding-top: var(--space-7);
     display: grid;
-    grid-template-columns: 1.5fr repeat(3, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-7);
   }
 
@@ -49,42 +49,110 @@
   }
 
   .logo-mark {
-    display: grid;
-    place-items: center;
+    display: block;
     width: 48px;
     height: 48px;
-    border-radius: 14px;
-    color: var(--color-on-accent);
-    background: var(--color-orange);
-    font-weight: 900;
+    object-fit: contain;
+    background: transparent;
   }
 
-  &__bottom {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-4);
+  &__details {
+    margin-top: var(--space-6);
     padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--space-5);
     font-size: 0.78rem;
     color: var(--color-dimmed);
+  }
+
+  &__signature {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    justify-self: start;
+  }
+
+  &__signature-label {
+    color: var(--color-dimmed);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__signature-logo {
+    display: block;
+    width: clamp(96px, 8.5vw, 128px);
+    height: auto;
+    filter: none;
+    mix-blend-mode: normal;
+    opacity: 1;
+  }
+
+  &__signature-link {
+    display: inline-block;
+    line-height: 0;
+  }
+
+  &__author {
+    grid-column: 1 / -1;
+    margin-top: var(--space-1);
+    color: var(--color-dimmed);
+    font-size: 0.78rem;
   }
 }
 
 @media (max-width: 800px) {
   .footer {
+    margin-top: var(--space-8);
     padding-inline: var(--space-4);
 
     &__inner {
       grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      padding-top: var(--space-6);
+    }
+
+    &__details {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      margin-top: var(--space-5);
+      padding-top: var(--space-5);
     }
   }
 }
 
 @media (max-width: 560px) {
-  .footer__inner {
-    grid-template-columns: 1fr !important;
-  }
+  .footer {
+    margin-top: var(--space-7);
+    padding-bottom: var(--space-6);
 
-  .footer__bottom {
-    flex-direction: column;
+    &__inner {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: var(--space-4);
+      padding-top: var(--space-5);
+    }
+
+    .description {
+      max-width: none;
+      line-height: 1.6;
+    }
+
+    &__details {
+      grid-template-columns: minmax(0, 1fr) minmax(124px, 42%);
+      align-items: start;
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+    }
+  }
+}
+
+:host-context(html:not([data-theme='light'])) {
+  .footer__signature-logo {
+    filter: invert(1) grayscale(1) brightness(2.25) contrast(1.05);
   }
 }

@@ -15,9 +15,12 @@ interface PageSeo {
   description: string;
   path: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   type?: 'website' | 'article';
   breadcrumbs?: BreadcrumbItem[];
   jsonLd?: JsonLd;
+  noIndex?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -25,10 +28,10 @@ export class SeoService {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly document = inject(DOCUMENT);
-  private readonly siteUrl = 'https://karol-sliwa-redesign.netlify.app';
-  private readonly siteName = 'Karol Mowi';
+  private readonly siteUrl = 'https://karolsliwa.com';
+  private readonly siteName = 'Karol Mówi';
   private readonly twitterHandle = '@KarolMowiNBA';
-  private readonly defaultImage = `${this.siteUrl}/assets/hero-fallback.svg`;
+  private readonly defaultImage = `${this.siteUrl}/assets/brand/logo-ball.png`;
 
   setPage(config: PageSeo): void {
     const url = this.absoluteUrl(config.path);
@@ -38,7 +41,11 @@ export class SeoService {
     this.clearArticleTags();
     this.title.setTitle(config.title);
     this.updateTag('name', 'description', config.description);
-    this.updateTag('name', 'robots', 'index, follow');
+    this.updateTag(
+      'name',
+      'robots',
+      config.noIndex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+    );
     this.updateTag('property', 'og:locale', 'pl_PL');
     this.updateTag('property', 'og:type', type);
     this.updateTag('property', 'og:site_name', this.siteName);
@@ -46,6 +53,9 @@ export class SeoService {
     this.updateTag('property', 'og:description', config.description);
     this.updateTag('property', 'og:url', url);
     this.updateTag('property', 'og:image', image);
+    this.updateTag('property', 'og:image:alt', config.title);
+    this.updateTag('property', 'og:image:width', String(config.imageWidth ?? 1200));
+    this.updateTag('property', 'og:image:height', String(config.imageHeight ?? 630));
     this.updateTag('name', 'twitter:card', 'summary_large_image');
     this.updateTag('name', 'twitter:site', this.twitterHandle);
     this.updateTag('name', 'twitter:creator', this.twitterHandle);
@@ -53,11 +63,12 @@ export class SeoService {
     this.updateTag('name', 'twitter:description', config.description);
     this.updateTag('name', 'twitter:image', image);
     this.setCanonical(url);
+    this.setAlternateLinks(url);
     this.setJsonLd(config.jsonLd ?? this.pageJsonLd(url, config.breadcrumbs));
   }
 
   setArticle(post: PostViewModel): void {
-    const path = `/post/${post.slug}`;
+    const path = `/${post.slug}`;
     const url = this.absoluteUrl(path);
     const image = this.absoluteUrl(post.imageUrl);
     const description = this.truncate(post.excerptText || post.title, 155);
@@ -68,10 +79,12 @@ export class SeoService {
     ];
 
     this.setPage({
-      title: `${post.title} | Karol Mowi`,
+      title: `${post.title} | Karol Mówi`,
       description,
       path,
       image,
+      imageWidth: post.imageWidth,
+      imageHeight: post.imageHeight,
       type: 'article',
       breadcrumbs,
       jsonLd: [
@@ -79,7 +92,7 @@ export class SeoService {
         this.personJsonLd(post.authorName),
         this.breadcrumbJsonLd(breadcrumbs),
         {
-          '@type': 'Article',
+          '@type': 'BlogPosting',
           '@id': `${url}#article`,
           headline: post.title,
           description,
@@ -93,6 +106,8 @@ export class SeoService {
             '@id': `${this.siteUrl}/#organization`
           },
           mainEntityOfPage: url,
+          inLanguage: 'pl-PL',
+          isAccessibleForFree: true,
           articleSection: post.topicNames.at(0) ?? 'NBA',
           keywords: [...post.topicNames, ...post.categoryNames].join(', ')
         }
@@ -126,6 +141,19 @@ export class SeoService {
     }
 
     link.setAttribute('href', url);
+  }
+
+  private setAlternateLinks(url: string): void {
+    for (const language of ['pl', 'x-default']) {
+      let link = this.document.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${language}"]`);
+      if (!link) {
+        link = this.document.createElement('link');
+        link.setAttribute('rel', 'alternate');
+        link.setAttribute('hreflang', language);
+        this.document.head.appendChild(link);
+      }
+      link.setAttribute('href', url);
+    }
   }
 
   private setJsonLd(data: JsonLd): void {

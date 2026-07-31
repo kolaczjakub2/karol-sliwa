@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://karol-sliwa-redesign.netlify.app/sitemap.xml
+Sitemap: https://karolsliwa.com/sitemap.xml

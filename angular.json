@@ -27,11 +27,6 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               {
-                "glob": "_redirects",
-                "input": "src",
-                "output": "/"
-              },
-              {
                 "glob": "robots.txt",
                 "input": "src",
                 "output": "/"
@@ -50,7 +45,22 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "security": {
+              "allowedHosts": [
+                "karolsliwa.com",
+                "www.karolsliwa.com",
+                "karol-sliwa-redesign.netlify.app",
+                "*.netlify.app",
+                "localhost",
+                "127.0.0.1"
+              ]
+            },
+            "ssr": {
+              "entry": "src/server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -106,11 +116,6 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "_redirects",
-                "input": "src",
-                "output": "/"
-              },
               {
                 "glob": "robots.txt",
                 "input": "src",

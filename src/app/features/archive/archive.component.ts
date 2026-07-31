@@ -58,8 +58,8 @@ export class ArchiveComponent {
 
   constructor() {
     this.seo.setPage({
-      title: 'Archiwum NBA | Karol Mowi',
-      description: 'Archiwum tekstow, newsow, podcastow i analiz NBA publikowanych na stronie Karol Mowi.',
+      title: 'Archiwum NBA | Karol Mówi',
+      description: 'Archiwum tekstów, newsów, podcastów i analiz NBA publikowanych na stronie Karol Mówi.',
       path: '/archiwum',
       breadcrumbs: [
         { name: 'Start', path: '/' },

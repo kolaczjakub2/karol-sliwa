@@ -27,7 +27,7 @@ The app extends the endpoint with `_embed=1`, so it can read featured images, au
 
 - `/` — homepage with hero, featured posts, latest feed, podcast block, format tiles, author/newsletter section
 - `/archiwum` — searchable archive with pagination
-- `/post/:slug` — article detail page using WordPress content and a comments section
+- `/:slug` — article detail page preserving the original WordPress permalink
 
 ## Run locally
 
@@ -42,11 +42,24 @@ Then open:
 http://localhost:4200
 ```
 
-## Build
+## Build i SSR
 
 ```bash
 npm run build
 ```
+
+Build generuje bundle przeglądarkowy oraz serwer Node.js. Wszystkie trasy, w tym
+dynamiczne `/:slug`, są renderowane na serwerze dla każdego żądania.
+
+Uruchomienie buildu produkcyjnego lokalnie:
+
+```bash
+npm run serve:ssr
+```
+
+Serwer domyślnie nasłuchuje na `http://localhost:4000`; port można zmienić zmienną
+środowiskową `PORT`. Hosting produkcyjny musi obsługiwać runtime Node.js — samo
+opublikowanie zawartości katalogu `browser` wyłączy SSR.
 
 ## Notes
 

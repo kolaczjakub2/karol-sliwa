@@ -1,8 +1,8 @@
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { PLATFORM_ID } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { WordPressService } from '../../core/services/wordpress.service';
 import { PostViewModel } from '../../core/models/wp-post.model';
 import { SeoService } from '../../core/services/seo.service';
@@ -14,15 +14,14 @@ import { HomeTopicsComponent } from './components/home-topics/home-topics.compon
 import { FormatTile, HeroDirection } from './models/home-section.model';
 
 const LATEST_POSTS_LIMIT = 8;
-const HOME_POSTS_POOL_SIZE = 64;
+const HOME_POSTS_POOL_SIZE = 12;
+const HOME_SCROLL_STORAGE_KEY = 'ks-home-scroll-y';
 
 @Component({
   selector: 'ks-home',
   standalone: true,
   imports: [
     RouterLink,
-    MatButtonModule,
-    MatProgressSpinnerModule,
     HomeHeroComponent,
     HomeTopicsComponent,
     HomeLatestComponent,
@@ -33,9 +32,19 @@ const HOME_POSTS_POOL_SIZE = 64;
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly router = inject(Router);
   private readonly wp = inject(WordPressService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly sectionIds = ['najnowsze', 'podcast'] as const;
+  private readonly observedSections = new Map<string, Element>();
+  private readonly sectionOffset = 130;
+  private readonly shouldRestoreScroll = this.shouldRestoreScrollOnEntry();
+  private sectionSyncBound = false;
+  private activeSectionFragment: string | null = null;
 
   readonly posts = signal<PostViewModel[]>([]);
   readonly loading = signal(true);
@@ -110,15 +119,13 @@ export class HomeComponent {
 
   constructor() {
     this.seo.setPage({
-      title: 'Karol Mowi | NBA od 2006',
-      description: 'Artykuly, newsy, analizy i podcast o NBA od Karola Sliwy. Autorski glos o koszykowce od 2006 roku.',
+      title: 'Karol Mówi | NBA od 2006',
+      description: 'Artykuły, newsy, analizy i podcast o NBA od Karola Śliwy. Autorski głos o koszykówce od 2006 roku.',
       path: '/'
     });
 
     this.loadPosts();
 
-    const autoplayId = setInterval(() => this.nextHero(true), 8500);
-    this.destroyRef.onDestroy(() => clearInterval(autoplayId));
   }
 
   selectHero(index: number): void {
@@ -156,6 +163,19 @@ export class HomeComponent {
       next: ({ items }) => {
         this.posts.set(items);
         this.loading.set(false);
+        this.startSectionUrlSync();
+        this.restoreSavedScrollPosition();
+        const featuredPost = this.heroPosts().at(0);
+        if (featuredPost) {
+          this.seo.setPage({
+            title: 'Karol Mówi | NBA od 2006',
+            description: 'Artykuły, newsy, analizy i podcast o NBA od Karola Śliwy. Autorski głos o koszykówce od 2006 roku.',
+            path: '/',
+            image: featuredPost.imageUrl,
+            imageWidth: featuredPost.imageWidth,
+            imageHeight: featuredPost.imageHeight
+          });
+        }
       },
       error: (error: Error) => {
         this.error.set(error.message);
@@ -164,10 +184,202 @@ export class HomeComponent {
     });
   }
 
+  private startSectionUrlSync(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const win = this.document.defaultView;
+    if (!win) {
+      return;
+    }
+
+    if (!this.sectionSyncBound) {
+      const updateFragment = () => {
+        this.syncFragmentWithScroll();
+        this.persistHomeScrollPosition();
+      };
+      win.addEventListener('scroll', updateFragment, { passive: true });
+      win.addEventListener('resize', updateFragment);
+      this.destroyRef.onDestroy(() => {
+        win.removeEventListener('scroll', updateFragment);
+        win.removeEventListener('resize', updateFragment);
+      });
+      this.sectionSyncBound = true;
+    }
+
+    win.setTimeout(() => {
+      this.collectObservedSections();
+      this.syncFragmentWithScroll(true);
+      this.persistHomeScrollPosition();
+    }, 0);
+  }
+
+  private collectObservedSections(): void {
+    this.observedSections.clear();
+    for (const id of this.sectionIds) {
+      const section = this.document.getElementById(id);
+      if (this.hasLayoutApi(section) && section.getClientRects().length > 0) {
+        this.observedSections.set(id, section);
+      }
+    }
+  }
+
+  private syncFragmentWithScroll(force = false): void {
+    const win = this.document.defaultView;
+    if (!win) {
+      return;
+    }
+
+    if (!this.observedSections.size) {
+      this.collectObservedSections();
+      if (!this.observedSections.size) {
+        return;
+      }
+    }
+
+    const sections = this.sectionIds
+      .map((id) => this.observedSections.get(id))
+      .filter((section): section is Element => Boolean(section && this.hasLayoutApi(section)));
+
+    if (!sections.length) {
+      return;
+    }
+
+    const firstSectionTop = sections[0].getBoundingClientRect().top + win.scrollY;
+    if (win.scrollY + this.sectionOffset < firstSectionTop) {
+      this.replaceHomeFragment(null, force);
+      return;
+    }
+
+    let activeSectionId = sections[0].id;
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top - this.sectionOffset <= 0) {
+        activeSectionId = section.id;
+      } else {
+        break;
+      }
+    }
+
+    this.replaceHomeFragment(activeSectionId, force);
+  }
+
+  private replaceHomeFragment(fragment: string | null, force = false): void {
+    const win = this.document.defaultView;
+    if (!win) {
+      return;
+    }
+
+    if (!force && this.activeSectionFragment === fragment) {
+      return;
+    }
+
+    this.activeSectionFragment = fragment;
+    const path = `${win.location.pathname}${win.location.search}`;
+    const currentUrl = `${path}${win.location.hash}`;
+    const nextUrl = fragment ? `${path}#${fragment}` : path;
+    if (nextUrl === currentUrl) {
+      return;
+    }
+
+    win.history.replaceState(win.history.state, '', nextUrl);
+  }
+
+  private hasLayoutApi(value: unknown): value is Element & {
+    getClientRects: () => DOMRectList;
+    getBoundingClientRect: () => DOMRect;
+  } {
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    const candidate = value as {
+      getClientRects?: unknown;
+      getBoundingClientRect?: unknown;
+    };
+
+    return typeof candidate.getClientRects === 'function'
+      && typeof candidate.getBoundingClientRect === 'function';
+  }
+
   private findPostByKeyword(keywords: string[]): PostViewModel | undefined {
     return this.posts().find((post) => {
       const haystack = `${post.title} ${post.excerptText} ${post.topicNames.join(' ')}`.toLowerCase();
       return keywords.some((keyword) => haystack.includes(keyword));
     });
+  }
+
+  private shouldRestoreScrollOnEntry(): boolean {
+    if (!this.isBrowser) {
+      return false;
+    }
+
+    const win = this.document.defaultView;
+    if (!win) {
+      return false;
+    }
+
+    if (win.location.pathname !== '/' || Boolean(win.location.hash)) {
+      return false;
+    }
+
+    const previousUrl = this.router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
+    return this.isArticleUrl(previousUrl);
+  }
+
+  private isArticleUrl(value: string | undefined): boolean {
+    if (!value) {
+      return false;
+    }
+
+    const path = value.split(/[?#]/)[0];
+    if (path.startsWith('/post/')) {
+      return true;
+    }
+
+    const segments = path.split('/').filter(Boolean);
+    if (segments.length !== 1) {
+      return false;
+    }
+
+    return !['archiwum', 'o-mnie', 'wspolpraca'].includes(segments[0]);
+  }
+
+  private persistHomeScrollPosition(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    const win = this.document.defaultView;
+    if (!win) {
+      return;
+    }
+
+    win.sessionStorage.setItem(HOME_SCROLL_STORAGE_KEY, String(Math.max(0, Math.round(win.scrollY))));
+  }
+
+  private restoreSavedScrollPosition(attempt = 0): void {
+    if (!this.shouldRestoreScroll || !this.isBrowser) {
+      return;
+    }
+
+    const win = this.document.defaultView;
+    if (!win) {
+      return;
+    }
+
+    const raw = win.sessionStorage.getItem(HOME_SCROLL_STORAGE_KEY);
+    const target = Number(raw);
+    if (!Number.isFinite(target) || target <= 0) {
+      return;
+    }
+
+    const maxScroll = this.document.documentElement.scrollHeight - win.innerHeight;
+    if (maxScroll + 4 < target && attempt < 18) {
+      win.setTimeout(() => this.restoreSavedScrollPosition(attempt + 1), 90);
+      return;
+    }
+
+    win.scrollTo({ top: Math.min(target, Math.max(0, maxScroll)), behavior: 'auto' });
   }
 }

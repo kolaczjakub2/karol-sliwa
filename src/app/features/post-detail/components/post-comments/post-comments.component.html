@@ -30,7 +30,7 @@
           >
             <div class="comment-card__avatar">
               @if (row.comment.authorAvatar) {
-                <img [src]="row.comment.authorAvatar" alt="" loading="lazy">
+                <img [src]="row.comment.authorAvatar" alt="" width="48" height="48" loading="lazy" decoding="async">
               } @else {
                 <mat-icon fontSet="material-icons-outlined">person</mat-icon>
               }

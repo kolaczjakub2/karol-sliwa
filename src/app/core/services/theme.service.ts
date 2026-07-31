@@ -18,8 +18,8 @@ export class ThemeService {
       const root = this.document.documentElement;
       const body = this.document.body;
 
-      root.dataset['theme'] = mode;
-      body.dataset['theme'] = mode;
+      root.setAttribute('data-theme', mode);
+      body.setAttribute('data-theme', mode);
       root.style.colorScheme = mode;
 
       try {

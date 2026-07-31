@@ -40,7 +40,8 @@ export class HomeHeroComponent {
   }
 
   heroSummary(post: PostViewModel): string {
-    return this.truncate(post.excerptText, 210);
+    const excerptWithoutToc = this.removeTableOfContents(post.excerptText);
+    return this.truncate(excerptWithoutToc, 260);
   }
 
   heroBackdropLabel(post: PostViewModel): string {
@@ -57,5 +58,16 @@ export class HomeHeroComponent {
   private truncate(value: string, maxLength: number): string {
     if (value.length <= maxLength) return value;
     return `${value.slice(0, maxLength).trim()}…`;
+  }
+
+  private removeTableOfContents(value: string): string {
+    const markerPattern = /\bspis\s*tre(?:ś|s)ci\b/i;
+    const markerMatch = markerPattern.exec(value);
+    if (!markerMatch || markerMatch.index <= 0) {
+      return value;
+    }
+
+    const beforeMarker = value.slice(0, markerMatch.index).trim();
+    return beforeMarker || value;
   }
 }

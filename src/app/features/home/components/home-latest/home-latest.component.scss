@@ -14,6 +14,11 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-4);
+
+    &--single {
+      grid-template-columns: minmax(320px, 560px);
+      justify-content: start;
+    }
   }
 }
 
@@ -87,6 +92,10 @@
 @media (max-width: 760px) {
   .latest__grid {
     grid-template-columns: 1fr;
+
+    &--single {
+      grid-template-columns: 1fr;
+    }
   }
 
   .section-header {

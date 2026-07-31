@@ -1,13 +1,13 @@
 @if (loading()) {
   <section class="loading-state">
-    <mat-spinner diameter="42" />
+    <span class="loading-spinner" aria-hidden="true"></span>
     <p>Pobieram najnowsze wpisy…</p>
   </section>
 } @else if (error()) {
   <section class="error-state">
     <h1>Nie udało się pobrać wpisów</h1>
     <p>{{ error() }}</p>
-    <a mat-flat-button routerLink="/archiwum">Przejdź do archiwum</a>
+    <a class="error-state__link" routerLink="/archiwum">Przejdź do archiwum</a>
   </section>
 } @else {
   @for (post of heroSlide(); track post.id) {

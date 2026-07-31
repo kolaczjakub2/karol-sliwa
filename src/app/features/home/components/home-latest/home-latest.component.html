@@ -12,7 +12,7 @@
     </div>
   </header>
 
-  <div class="latest__grid">
+  <div class="latest__grid" [class.latest__grid--single]="posts().length === 1">
     @for (post of posts(); track post.id) {
       <ks-article-card [post]="post" />
     } @empty {
@@ -21,6 +21,14 @@
   </div>
 
   <div class="more-link">
-    <a routerLink="/archiwum">Zobacz więcej wpisów →</a>
+    <a routerLink="/archiwum">
+      Zobacz więcej wpisów
+      <span class="link-arrow" aria-hidden="true">
+        <svg viewBox="0 0 16 16" focusable="false">
+          <path d="M3.5 8h8" />
+          <path d="m8.5 4 4 4-4 4" />
+        </svg>
+      </span>
+    </a>
   </div>
 </section>

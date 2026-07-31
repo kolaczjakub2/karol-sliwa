@@ -27,7 +27,7 @@
 
     <div class="hero__meta">
       @if (post().authorAvatar) {
-        <img [src]="post().authorAvatar" alt="" loading="lazy">
+        <img [src]="post().authorAvatar" alt="" width="48" height="48" decoding="async">
       }
       <strong>{{ post().authorName }}</strong>
       <span>•</span>
@@ -37,19 +37,30 @@
     </div>
 
     <div class="hero__actions">
-      <a class="hero__primary-cta" [routerLink]="['/post', post().slug]">
+      <a class="hero__primary-cta" [routerLink]="['/', post().slug]">
         <span>Czytaj wpis</span>
         <mat-icon fontSet="material-icons-outlined" aria-hidden="true">arrow_forward</mat-icon>
       </a>
-      <a class="text-link" routerLink="/archiwum">Zobacz wszystkie wpisy →</a>
     </div>
   </div>
 
   <div class="hero__visual" [ngClass]="heroImageClass(post())">
-    <a class="hero__visual-link" [routerLink]="['/post', post().slug]" [attr.aria-label]="'Czytaj wpis: ' + post().title">
+    <a class="hero__visual-link" [routerLink]="['/', post().slug]" [attr.aria-label]="'Czytaj wpis: ' + post().title + ' — ' + primaryCategory(post())">
       <span class="massive-title">{{ heroBackdropLabel(post()) }}</span>
-      <img [src]="heroImage(post())" [alt]="post().imageAlt">
-      <span class="hero__category">{{ primaryCategory(post()) }}</span>
+      <img
+        [src]="heroImage(post())"
+        [attr.srcset]="post().imageSrcSet || null"
+        sizes="(max-width: 760px) 100vw, 55vw"
+        [alt]="post().imageAlt"
+        [attr.width]="post().imageWidth"
+        [attr.height]="post().imageHeight"
+        fetchpriority="high"
+        decoding="async"
+      >
+      <span class="hero__badges">
+        <span class="hero__category">{{ primaryCategory(post()) }}</span>
+        <span class="hero__feature-badge">Wyróżniony wpis</span>
+      </span>
     </a>
 
     <div class="hero__controls" aria-label="Sterowanie wyróżnionymi wpisami">
@@ -62,12 +73,14 @@
     </div>
 
     @if (podcastPost(); as podcast) {
-      <a class="podcast-float" [routerLink]="['/post', podcast.slug]" aria-label="Przejdź do najnowszego podcastu">
+      <a class="podcast-float" [routerLink]="['/', podcast.slug]" aria-label="Przejdź do najnowszego podcastu">
         <span>Najnowszy podcast</span>
         <strong>{{ podcast.title }}</strong>
         <small>{{ podcast.readTime }} min czytania / słuchania</small>
         <span class="podcast-float__play" aria-hidden="true">
-          <mat-icon fontSet="material-icons-outlined">play_arrow</mat-icon>
+          <svg viewBox="0 0 16 16" focusable="false">
+            <path d="M5.2 4.5v7l5.8-3.5z" />
+          </svg>
         </span>
       </a>
     }

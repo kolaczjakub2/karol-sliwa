@@ -110,8 +110,8 @@ export class AboutComponent {
 
   constructor() {
     this.seo.setPage({
-      title: 'O mnie | Karol Mowi',
-      description: 'Poznaj Karola Sliwe: autora strony Karol Mowi, sedziego koszykarskiego oraz tworce tekstow i podcastow o NBA.',
+      title: 'O mnie | Karol Mówi',
+      description: 'Poznaj Karola Śliwę: autora strony Karol Mówi, sędziego koszykarskiego oraz twórcę tekstów i podcastów o NBA.',
       path: '/o-mnie',
       image: this.portraitUrl,
       breadcrumbs: [

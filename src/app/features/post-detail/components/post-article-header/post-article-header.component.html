@@ -4,7 +4,7 @@
   <h1>{{ article().title }}</h1>
   <div class="meta">
     @if (article().authorAvatar) {
-      <img [src]="article().authorAvatar" alt="" loading="lazy">
+      <img [src]="article().authorAvatar" alt="" width="48" height="48" decoding="async">
     }
     <strong>{{ article().authorName }}</strong>
     <span>•</span>
