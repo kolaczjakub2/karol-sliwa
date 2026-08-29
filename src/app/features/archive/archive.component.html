@@ -7,7 +7,7 @@
 />
 
 @if (loading()) {
-  <div class="state"><mat-spinner diameter="42" /></div>
+  <div class="state"><span class="loading-spinner" aria-label="Ładowanie"></span></div>
 } @else if (error()) {
   <div class="state state--error">{{ error() }}</div>
 } @else {

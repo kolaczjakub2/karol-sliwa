@@ -1,11 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AppIconComponent } from '../../../../shared/components/app-icon/app-icon.component';
 import { CommentViewModel, PostViewModel } from '../../../../core/models/wp-post.model';
 import { CommentForm, CommentRow } from '../../models/comment-thread.model';
 
@@ -15,11 +11,7 @@ import { CommentForm, CommentRow } from '../../models/comment-thread.model';
   imports: [
     DatePipe,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatProgressSpinnerModule
+    AppIconComponent
   ],
   templateUrl: './post-comments.component.html',
   styleUrl: './post-comments.component.scss'

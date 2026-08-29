@@ -14,6 +14,36 @@
   &--error { color: var(--color-danger); }
 }
 
+.article {
+  display: grid;
+  grid-template-columns: minmax(420px, 0.85fr) minmax(560px, 1.15fr);
+  grid-template-rows: minmax(calc(100svh - 96px - var(--space-6)), auto) auto;
+  column-gap: clamp(32px, 4vw, 64px);
+  align-items: center;
+
+  > ks-post-comments {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    width: 100%;
+  }
+
+  > .comments-placeholder {
+    grid-column: 1 / -1;
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .article {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+
+    > ks-post-comments {
+      grid-row: auto;
+    }
+  }
+}
+
 @media (max-width: 860px) {
   :host { padding-inline: var(--space-4); }
 }

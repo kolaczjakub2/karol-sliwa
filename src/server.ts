@@ -5,8 +5,16 @@ import {
   getTrustProxyHeaders,
 } from '@netlify/angular-runtime/app-engine.js';
 
+const allowedHosts = [...new Set([
+  ...getAllowedHosts(),
+  'localhost',
+  'localhost:4201',
+  '127.0.0.1',
+  '127.0.0.1:4201',
+])];
+
 const angularAppEngine = new AngularAppEngine({
-  allowedHosts: getAllowedHosts(),
+  allowedHosts,
   trustProxyHeaders: getTrustProxyHeaders(),
 });
 
@@ -26,6 +34,10 @@ export async function netlifyAppEngineHandler(request: Request): Promise<Respons
   headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   if (request.method === 'GET' && !url.pathname.includes('.')) {
     headers.set('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
+    headers.set(
+      'Netlify-CDN-Cache-Control',
+      'public, durable, s-maxage=300, stale-while-revalidate=86400',
+    );
   }
 
   return new Response(result.body, {

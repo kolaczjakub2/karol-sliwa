@@ -34,7 +34,7 @@
     <div class="actions">
       <div class="social-links" aria-label="Social media">
         @for (link of socialLinks; track link.label) {
-          <a [href]="link.href" target="_blank" rel="noopener noreferrer" [attr.aria-label]="link.label" [title]="link.label">
+          <a [href]="link.href" target="_blank" rel="noopener noreferrer" [attr.aria-label]="link.label" [title]="link.label" [attr.data-platform]="link.icon">
             @switch (link.icon) {
               @case ('facebook') {
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -121,7 +121,7 @@
 
       <div class="mobile-nav__social" aria-label="Social media">
         @for (link of socialLinks; track link.label) {
-          <a [href]="link.href" target="_blank" rel="noopener noreferrer" [attr.aria-label]="link.label">
+          <a [href]="link.href" target="_blank" rel="noopener noreferrer" [attr.aria-label]="link.label" [attr.data-platform]="link.icon">
             @switch (link.icon) {
               @case ('facebook') {
                 <svg viewBox="0 0 24 24" aria-hidden="true">

@@ -12,12 +12,12 @@
     <div class="comments__list" aria-live="polite">
       @if (loading()) {
         <div class="comments__state">
-          <mat-spinner diameter="34" />
+          <span class="loading-spinner comments__spinner" aria-hidden="true"></span>
           <span>Ładowanie komentarzy...</span>
         </div>
       } @else if (error()) {
         <div class="comments__state comments__state--error">
-          <mat-icon fontSet="material-icons-outlined">error_outline</mat-icon>
+          <ks-icon name="error_outline" />
           <span>{{ error() }}</span>
         </div>
       } @else if (rows().length) {
@@ -32,7 +32,7 @@
               @if (row.comment.authorAvatar) {
                 <img [src]="row.comment.authorAvatar" alt="" width="48" height="48" loading="lazy" decoding="async">
               } @else {
-                <mat-icon fontSet="material-icons-outlined">person</mat-icon>
+                <ks-icon name="person" />
               }
             </div>
             <div class="comment-card__content">
@@ -58,7 +58,7 @@
         }
       } @else {
         <div class="comments__empty">
-          <mat-icon fontSet="material-icons-outlined">chat_bubble_outline</mat-icon>
+          <ks-icon name="chat_bubble_outline" />
           <strong>Brak komentarzy pod tym wpisem</strong>
           <span>Bądź pierwszą osobą, która rozpocznie dyskusję.</span>
         </div>
@@ -71,7 +71,7 @@
 
       @if (notice()) {
         <div class="comment-form__notice">
-          <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          <ks-icon name="info" />
           <span>{{ notice() }}</span>
         </div>
       }
@@ -82,56 +82,51 @@
             <span>Odpowiadasz na komentarz</span>
             <strong>{{ parentComment.authorName }}</strong>
           </div>
-          <button mat-icon-button type="button" aria-label="Anuluj odpowiedź" (click)="replyCanceled.emit()">
-            <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+          <button type="button" aria-label="Anuluj odpowiedź" (click)="replyCanceled.emit()">
+            <ks-icon name="close" />
           </button>
         </div>
       }
 
-      <mat-form-field appearance="outline">
-        <mat-label>Imię / podpis</mat-label>
-        <input matInput formControlName="authorName" autocomplete="name">
+      <label class="comment-field">
+        <span>Imię / podpis</span>
+        <input formControlName="authorName" autocomplete="name">
         @if (form().controls.authorName.hasError('required')) {
-          <mat-error>Podaj imię lub podpis.</mat-error>
+          <small class="comment-field__error">Podaj imię lub podpis.</small>
         }
         @if (form().controls.authorName.hasError('minlength')) {
-          <mat-error>Podpis musi mieć minimum 2 znaki.</mat-error>
+          <small class="comment-field__error">Podpis musi mieć minimum 2 znaki.</small>
         }
-      </mat-form-field>
+      </label>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="authorEmail" type="email" autocomplete="email">
-        <mat-hint>Email nie będzie pokazany publicznie.</mat-hint>
+      <label class="comment-field">
+        <span>Email</span>
+        <input formControlName="authorEmail" type="email" autocomplete="email">
+        <small>Email nie będzie pokazany publicznie.</small>
         @if (form().controls.authorEmail.hasError('required')) {
-          <mat-error>Podaj adres email.</mat-error>
+          <small class="comment-field__error">Podaj adres email.</small>
         }
         @if (form().controls.authorEmail.hasError('email')) {
-          <mat-error>Podaj poprawny adres email.</mat-error>
+          <small class="comment-field__error">Podaj poprawny adres email.</small>
         }
-      </mat-form-field>
+      </label>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Strona WWW, opcjonalnie</mat-label>
-        <input matInput formControlName="authorUrl" type="url" autocomplete="url">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="comment-form__textarea">
-        <mat-label>Komentarz</mat-label>
-        <textarea matInput formControlName="content" rows="7"></textarea>
-        <mat-hint align="end">{{ form().controls.content.value.length }}/3000</mat-hint>
+      <label class="comment-field comment-form__textarea">
+        <span>Komentarz</span>
+        <textarea formControlName="content" rows="7"></textarea>
+        <small class="comment-field__counter">{{ form().controls.content.value.length }}/3000</small>
         @if (form().controls.content.hasError('required')) {
-          <mat-error>Wpisz treść komentarza.</mat-error>
+          <small class="comment-field__error">Wpisz treść komentarza.</small>
         }
         @if (form().controls.content.hasError('minlength')) {
-          <mat-error>Komentarz musi mieć minimum 5 znaków.</mat-error>
+          <small class="comment-field__error">Komentarz musi mieć minimum 5 znaków.</small>
         }
-      </mat-form-field>
+      </label>
 
-      <button mat-flat-button type="submit" [disabled]="submitting()">
-        <mat-icon fontSet="material-icons-outlined" class="comment-form__submit-icon" [class.is-hidden]="submitting()">send</mat-icon>
+      <button class="comment-form__submit" type="submit" [disabled]="submitting()">
+        <ks-icon name="send" class="comment-form__submit-icon" [class.is-hidden]="submitting()" />
         @if (submitting()) {
-          <mat-spinner diameter="18" />
+          <span class="loading-spinner comment-form__spinner" aria-hidden="true"></span>
           <span>Wysyłanie...</span>
         } @else {
           <span>{{ replyingTo() ? 'Opublikuj odpowiedź' : 'Opublikuj komentarz' }}</span>

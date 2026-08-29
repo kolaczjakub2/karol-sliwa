@@ -5,6 +5,70 @@
   padding: var(--space-7) var(--space-6) 0;
 }
 
+.deferred-section {
+  width: 100%;
+  content-visibility: auto;
+
+  &--topics { min-height: 220px; }
+  &--latest { min-height: 900px; }
+  &--podcast { min-height: 520px; }
+  &--author { min-height: 420px; }
+}
+
+.deferred-trigger {
+  display: block;
+  width: 1px;
+  height: 1px;
+  margin-bottom: -1px;
+  transform: translateY(180px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .deferred-enter {
+    display: block;
+    animation: deferredEnter 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    will-change: opacity, transform, filter;
+  }
+
+  .deferred-enter--left {
+    --deferred-enter-x: -28px;
+    --deferred-enter-y: 18px;
+  }
+
+  .deferred-enter--right {
+    --deferred-enter-x: 28px;
+    --deferred-enter-y: 18px;
+  }
+
+  .deferred-enter--soft {
+    --deferred-enter-x: 0px;
+    --deferred-enter-y: 24px;
+  }
+}
+
+@keyframes deferredEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--deferred-enter-x, 0), var(--deferred-enter-y, 22px), 0) scale(0.985);
+    filter: blur(7px);
+  }
+
+  65% { filter: blur(0); }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deferred-enter {
+    animation: none;
+  }
+}
+
 .loading-spinner {
   width: 42px;
   height: 42px;

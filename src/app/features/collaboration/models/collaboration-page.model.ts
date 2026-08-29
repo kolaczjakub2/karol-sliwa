@@ -8,3 +8,8 @@ export interface PromiseItem {
   value: string;
   label: string;
 }
+
+export interface CollaborationBrand {
+  name: string;
+  logoUrl: string;
+}

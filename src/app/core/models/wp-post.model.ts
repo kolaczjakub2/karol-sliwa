@@ -92,7 +92,6 @@ export interface CommentViewModel {
   postId: number;
   parentId: number;
   authorName: string;
-  authorUrl?: string;
   authorAvatar?: string;
   date: string;
   status?: string;
@@ -104,7 +103,6 @@ export interface CommentSubmission {
   postId: number;
   authorName: string;
   authorEmail: string;
-  authorUrl?: string;
   content: string;
   parentId?: number;
 }

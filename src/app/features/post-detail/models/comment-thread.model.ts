@@ -14,6 +14,5 @@ export interface CommentRow {
 export type CommentForm = FormGroup<{
   authorName: FormControl<string>;
   authorEmail: FormControl<string>;
-  authorUrl: FormControl<string>;
   content: FormControl<string>;
 }>;

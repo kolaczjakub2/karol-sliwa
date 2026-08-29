@@ -1,12 +1,24 @@
 <section class="events" aria-labelledby="events-title">
   <div class="section-heading">
-    <span class="eyebrow">Relacje</span>
-    <h2 id="events-title">Duże imprezy, prawdziwe akredytacje</h2>
+    <span class="eyebrow">Moja droga</span>
+    <h2 id="events-title">Od pierwszego wpisu po Finały NBA</h2>
   </div>
 
+  <h3 class="track-title">Droga</h3>
+  <div class="events__grid events__grid--milestones">
+    @for (event of milestones(); track event.title + event.year) {
+      <article [class.events__ongoing]="event.year.includes('dziś')">
+        <span>{{ event.year }}</span>
+        <h3>{{ event.title }}</h3>
+        <p>{{ event.place }}</p>
+      </article>
+    }
+  </div>
+
+  <h3 class="track-title track-title--events">Akredytacje</h3>
   <div class="events__grid">
     @for (event of events(); track event.title + event.year) {
-      <article>
+      <article [class.events__ongoing]="event.year.includes('dziś')">
         <span>{{ event.year }}</span>
         <h3>{{ event.title }}</h3>
         <p>{{ event.place }}</p>

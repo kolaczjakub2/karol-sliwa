@@ -1,15 +1,13 @@
 import { DatePipe, NgClass } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { PostViewModel } from '../../../../core/models/wp-post.model';
 import { HeroDirection } from '../../models/home-section.model';
 
 @Component({
   selector: 'ks-home-hero',
   standalone: true,
-  imports: [RouterLink, DatePipe, NgClass, MatButtonModule, MatIconModule],
+  imports: [RouterLink, DatePipe, NgClass],
   templateUrl: './home-hero.component.html',
   styleUrl: './home-hero.component.scss'
 })
@@ -42,13 +40,6 @@ export class HomeHeroComponent {
   heroSummary(post: PostViewModel): string {
     const excerptWithoutToc = this.removeTableOfContents(post.excerptText);
     return this.truncate(excerptWithoutToc, 260);
-  }
-
-  heroBackdropLabel(post: PostViewModel): string {
-    const haystack = `${post.title} ${post.topicNames.join(' ')}`.toLowerCase();
-
-    if (haystack.includes('small talk') || haystack.includes('podcast')) return 'NBA\nTALK';
-    return 'NBA\nNEWS';
   }
 
   primaryCategory(post: PostViewModel): string {

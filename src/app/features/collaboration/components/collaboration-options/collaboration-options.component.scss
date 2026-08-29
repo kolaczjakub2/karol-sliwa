@@ -17,7 +17,7 @@
   gap: var(--space-4);
 
   article {
-    min-height: 310px;
+    min-height: 270px;
     display: grid;
     align-content: end;
     gap: var(--space-3);
@@ -27,7 +27,7 @@
     background: var(--gradient-card-soft);
     transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 
-    mat-icon {
+    ks-icon {
       color: var(--color-orange);
       font-size: 38px;
       width: 38px;
@@ -67,5 +67,11 @@
 @media (max-width: 760px) {
   .cooperation-options__grid {
     grid-template-columns: 1fr;
+
+    article {
+      min-height: 0;
+      align-content: start;
+      padding: var(--space-5);
+    }
   }
 }

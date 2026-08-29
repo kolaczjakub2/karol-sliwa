@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
+import { AppIconComponent } from '../../../../shared/components/app-icon/app-icon.component';
 
 @Component({
   selector: 'ks-home-author',
   standalone: true,
-  imports: [RouterLink, MatIconModule],
+  imports: [RouterLink, AppIconComponent],
   templateUrl: './home-author.component.html',
   styleUrl: './home-author.component.scss'
 })

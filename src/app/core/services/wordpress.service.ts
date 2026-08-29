@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { DOCUMENT } from '@angular/common';
-import { inject, Injectable, isDevMode } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { inject, Injectable, isDevMode, PLATFORM_ID } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
 import {
   CommentSubmission,
@@ -33,6 +33,7 @@ interface TopicDefinition {
 export class WordPressService {
   private readonly http = inject(HttpClient);
   private readonly document = inject(DOCUMENT);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly apiBase = 'https://karolsliwa.com/wp-json/wp/v2';
   private readonly fallbackImage = 'assets/fallback-nba.svg';
   private readonly topicDefinitions: TopicDefinition[] = [
@@ -106,11 +107,6 @@ export class WordPressService {
       content: payload.content.trim()
     };
 
-    const url = payload.authorUrl?.trim();
-    if (url) {
-      body['author_url'] = url;
-    }
-
     if (payload.parentId) {
       body['parent'] = payload.parentId;
     }
@@ -139,7 +135,7 @@ export class WordPressService {
     const sourceImageUrl = media?.source_url ?? selectedImage?.source_url;
     const imageWidth = media?.media_details?.width ?? selectedImage?.width ?? 1200;
     const imageHeight = media?.media_details?.height ?? selectedImage?.height ?? 675;
-    const responsiveWidths = [320, 480, 640, 768, 1024, 1280, 1600]
+    const responsiveWidths = [320, 480, 560, 640, 672, 768, 1024, 1280, 1600]
       .filter((width) => width < imageWidth)
       .concat(Math.min(imageWidth, 1920));
     const imageUrl = sourceImageUrl
@@ -150,7 +146,9 @@ export class WordPressService {
         .map((width) => `${this.optimizedImageUrl(sourceImageUrl, width)} ${width}w`)
         .join(', ')
       : undefined;
-    const contentHtml = this.removeLeadingFeaturedImage(rawContentHtml, sourceImageUrl);
+    const contentWithoutDuplicateImage = this.removeLeadingFeaturedImage(rawContentHtml, sourceImageUrl);
+    const contentWithoutAds = this.removeExecutableAndAdContent(contentWithoutDuplicateImage);
+    const contentHtml = this.replaceYouTubeEmbeds(contentWithoutAds);
     const contentText = this.decodeHtml(this.stripHtml(contentHtml));
 
     return {
@@ -186,7 +184,6 @@ export class WordPressService {
       postId: comment.post,
       parentId: comment.parent,
       authorName: this.decodeHtml(this.stripHtml(comment.author_name || 'Czytelnik')),
-      authorUrl: comment.author_url,
       authorAvatar: comment.author_avatar_urls?.['48'] ?? comment.author_avatar_urls?.['96'],
       date: comment.date,
       status,
@@ -303,6 +300,26 @@ export class WordPressService {
     return contentHtml;
   }
 
+  private replaceYouTubeEmbeds(contentHtml: string): string {
+    if (!contentHtml || !/youtu(?:be\.com|\.be)/i.test(contentHtml)) return contentHtml;
+
+    return contentHtml.replace(
+      /<iframe\b[^>]*\bsrc=["'](?:https?:)?\/\/(?:www\.)?youtube(?:-nocookie)?\.com\/embed\/([\w-]{6,})[^"']*["'][^>]*>\s*<\/iframe>/gi,
+      (_iframe, videoId: string) => {
+        const posterUrl = this.optimizedImageUrl(`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`, 960);
+        return `<a class="youtube-facade" href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" aria-label="Obejrzyj materiał na YouTube"><img src="${posterUrl}" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="youtube-facade__play" aria-hidden="true">▶</span><span class="youtube-facade__label">Obejrzyj na YouTube</span></a>`;
+      }
+    );
+  }
+
+  private removeExecutableAndAdContent(contentHtml: string): string {
+    return contentHtml
+      .replace(/<div\b[^>]*class=["'][^"']*\bkarol-po-tresci\b[^"']*["'][^>]*>[\s\S]*?<\/div>/gi, '')
+      .replace(/<ins\b[^>]*class=["'][^"']*\badsbygoogle\b[^"']*["'][^>]*>[\s\S]*?<\/ins>/gi, '')
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, '');
+  }
+
   private isDuplicateFeaturedMediaBlock(element: Element, featuredImageUrl: string): boolean {
     const media = element.matches('img, source') ? element : element.querySelector('img, source');
     const srcSet = media?.getAttribute('srcset');
@@ -354,11 +371,11 @@ export class WordPressService {
   }
 
   private optimizedImageUrl(sourceUrl: string, width: number): string {
-    if (isDevMode() || this.isLocalHost()) {
+    if (this.isBrowser && (isDevMode() || this.isLocalHost())) {
       return sourceUrl;
     }
 
-    return `/.netlify/images?url=${encodeURIComponent(sourceUrl)}&w=${width}&fm=webp&q=76`;
+    return `/.netlify/images?url=${encodeURIComponent(sourceUrl)}&w=${width}&fm=webp&q=60`;
   }
 
   private isLocalHost(): boolean {

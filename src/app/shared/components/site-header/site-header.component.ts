@@ -141,11 +141,15 @@ export class SiteHeaderComponent {
       const scrollTop = target.getBoundingClientRect().top + win.scrollY - headerHeight - 12;
 
       win.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' });
+
+      if (target.classList.contains('deferred-section') && attempt < 30) {
+        win.setTimeout(() => this.scrollToFragment(fragment, attempt + 1), 100);
+      }
       return;
     }
 
-    if (attempt < 20) {
-      win.setTimeout(() => this.scrollToFragment(fragment, attempt + 1), 120);
+    if (attempt < 30) {
+      win.setTimeout(() => this.scrollToFragment(fragment, attempt + 1), 100);
     }
   }
 

@@ -8,5 +8,6 @@ import { EventCard } from '../../models/about-page.model';
   styleUrl: './about-events.component.scss'
 })
 export class AboutEventsComponent {
+  readonly milestones = input.required<EventCard[]>();
   readonly events = input.required<EventCard[]>();
 }

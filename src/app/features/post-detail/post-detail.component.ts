@@ -1,11 +1,9 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, DestroyRef, RESPONSE_INIT, afterNextRender, computed, inject, signal } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, DestroyRef, PLATFORM_ID, RESPONSE_INIT, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommentViewModel, PostViewModel } from '../../core/models/wp-post.model';
 import { WordPressService } from '../../core/services/wordpress.service';
 import { SeoService } from '../../core/services/seo.service';
@@ -13,16 +11,16 @@ import { PostArticleBodyComponent } from './components/post-article-body/post-ar
 import { PostArticleHeaderComponent } from './components/post-article-header/post-article-header.component';
 import { PostCommentsComponent } from './components/post-comments/post-comments.component';
 import { CommentForm, CommentRow, CommentThreadNode } from './models/comment-thread.model';
+import { NotFoundComponent } from '../not-found/not-found.component';
 
 @Component({
   selector: 'ks-post-detail',
   standalone: true,
   imports: [
-    MatProgressSpinnerModule,
-    MatSnackBarModule,
     PostArticleHeaderComponent,
     PostArticleBodyComponent,
-    PostCommentsComponent
+    PostCommentsComponent,
+    NotFoundComponent
   ],
   templateUrl: './post-detail.component.html',
   styleUrl: './post-detail.component.scss'
@@ -34,9 +32,8 @@ export class PostDetailComponent {
   private readonly wp = inject(WordPressService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly fb = inject(FormBuilder).nonNullable;
-  private readonly snackBar = inject(MatSnackBar);
-  private loadCommentsAfterRender = false;
 
   readonly post = signal<PostViewModel | null>(null);
   readonly loading = signal(true);
@@ -53,16 +50,10 @@ export class PostDetailComponent {
   readonly commentForm: CommentForm = this.fb.group({
     authorName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(80)]],
     authorEmail: ['', [Validators.required, Validators.email, Validators.maxLength(120)]],
-    authorUrl: ['', [Validators.maxLength(180)]],
     content: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(3000)]]
   });
 
   constructor() {
-    afterNextRender(() => {
-      const post = this.post();
-      if (post && this.loadCommentsAfterRender) this.loadComments(post.id);
-    });
-
     this.route.paramMap.pipe(
       switchMap((params) => {
         this.loading.set(true);
@@ -78,7 +69,7 @@ export class PostDetailComponent {
 
         if (post) {
           this.seo.setArticle(post);
-          this.loadCommentsAfterRender = true;
+          if (this.isBrowser) this.loadComments(post.id);
         } else {
           if (this.responseInit) this.responseInit.status = 404;
           this.seo.setPage({
@@ -143,7 +134,6 @@ export class PostDetailComponent {
       postId: article.id,
       authorName: value.authorName,
       authorEmail: value.authorEmail,
-      authorUrl: value.authorUrl,
       content: value.content,
       parentId: parent?.id
     }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
@@ -159,12 +149,10 @@ export class PostDetailComponent {
           this.commentNotice.set(parent ? 'Odpowiedź została dodana.' : 'Komentarz został dodany.');
         }
 
-        this.snackBar.open(this.commentNotice() ?? 'Komentarz wysłany.', 'OK', { duration: 4200 });
       },
       error: (error: Error) => {
         this.submittingComment.set(false);
         this.commentNotice.set(error.message);
-        this.snackBar.open(error.message, 'OK', { duration: 6200 });
       }
     });
   }

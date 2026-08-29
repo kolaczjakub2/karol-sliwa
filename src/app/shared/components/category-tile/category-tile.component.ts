@@ -1,10 +1,10 @@
 import { Component, input, output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { AppIconComponent } from '../app-icon/app-icon.component';
 
 @Component({
   selector: 'ks-category-tile',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [AppIconComponent],
   templateUrl: './category-tile.component.html',
   styleUrl: './category-tile.component.scss'
 })

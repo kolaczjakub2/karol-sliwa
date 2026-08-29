@@ -1,11 +1,11 @@
 import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
+import { AppIconComponent } from '../../../../shared/components/app-icon/app-icon.component';
 
 @Component({
   selector: 'ks-archive-hero',
   standalone: true,
-  imports: [FormsModule, MatIconModule],
+  imports: [FormsModule, AppIconComponent],
   templateUrl: './archive-hero.component.html',
   styleUrl: './archive-hero.component.scss'
 })

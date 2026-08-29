@@ -13,7 +13,7 @@
 
   <div class="archive-paginator__controls">
     <button type="button" aria-label="Poprzednia strona" [disabled]="page() === 1" (click)="pageChange.emit(page() - 1)">
-      <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+      <ks-icon name="chevron_left" />
     </button>
 
     @for (pageNumber of pageNumbers(); track pageNumber) {
@@ -23,7 +23,7 @@
     }
 
     <button type="button" aria-label="Następna strona" [disabled]="page() === totalPages()" (click)="pageChange.emit(page() + 1)">
-      <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+      <ks-icon name="chevron_right" />
     </button>
   </div>
 </nav>

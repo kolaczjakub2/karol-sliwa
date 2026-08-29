@@ -1,4 +1,8 @@
-<figure class="hero-image">
+<figure
+  class="hero-image"
+  [style.--hero-aspect-ratio]="article().imageWidth / article().imageHeight"
+  [style.aspect-ratio]="article().imageWidth + ' / ' + article().imageHeight"
+>
   <img
     [src]="article().imageUrl"
     [attr.srcset]="article().imageSrcSet || null"

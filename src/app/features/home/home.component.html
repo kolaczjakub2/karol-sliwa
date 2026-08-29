@@ -24,18 +24,39 @@
     />
   }
 
-  <ks-home-topics [formats]="formats" (formatSelected)="setFilter($event)" />
-
-  <ks-home-latest
-    [posts]="filteredLatest()"
-    [filterOptions]="filterOptions"
-    [activeFilter]="activeFilter()"
-    (filterChange)="setFilter($event)"
-  />
-
-  @if (podcastPost(); as podcast) {
-    <ks-home-podcast [podcast]="podcast" [episodes]="recentPodcastPosts()" />
+  <span #topicsTrigger class="deferred-trigger" aria-hidden="true"></span>
+  @defer (on viewport(topicsTrigger)) {
+    <ks-home-topics class="deferred-enter deferred-enter--soft" [formats]="formats" (formatSelected)="setFilter($event)" />
+  } @placeholder {
+    <div class="deferred-section deferred-section--topics" aria-hidden="true"></div>
   }
 
-  <ks-home-author />
+  <span #latestTrigger class="deferred-trigger" aria-hidden="true"></span>
+  @defer (on viewport(latestTrigger)) {
+    <ks-home-latest
+      class="deferred-enter deferred-enter--left"
+      [posts]="filteredLatest()"
+      [filterOptions]="filterOptions"
+      [activeFilter]="activeFilter()"
+      (filterChange)="setFilter($event)"
+    />
+  } @placeholder {
+    <div id="najnowsze" class="deferred-section deferred-section--latest" aria-hidden="true"></div>
+  }
+
+  <span #podcastTrigger class="deferred-trigger" aria-hidden="true"></span>
+  @defer (on viewport(podcastTrigger)) {
+    @if (podcastPost(); as podcast) {
+      <ks-home-podcast class="deferred-enter deferred-enter--right" [podcast]="podcast" [episodes]="recentPodcastPosts()" />
+    }
+  } @placeholder {
+    <div id="podcast" class="deferred-section deferred-section--podcast" aria-hidden="true"></div>
+  }
+
+  <span #authorTrigger class="deferred-trigger" aria-hidden="true"></span>
+  @defer (on viewport(authorTrigger)) {
+    <ks-home-author class="deferred-enter deferred-enter--soft" />
+  } @placeholder {
+    <div class="deferred-section deferred-section--author" aria-hidden="true"></div>
+  }
 }

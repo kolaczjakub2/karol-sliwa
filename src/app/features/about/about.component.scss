@@ -2,11 +2,25 @@
   display: block;
   width: min(100%, var(--container));
   margin: 0 auto;
-  padding: var(--space-8) var(--space-6) 0;
+  padding: var(--space-6) var(--space-6) 0;
+}
+
+.about-journey {
+  margin-top: var(--space-8);
+  padding: var(--space-7);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--gradient-card-soft);
 }
 
 @media (max-width: 760px) {
   :host {
     padding: var(--space-5) var(--space-4) 0;
+  }
+
+  .about-journey {
+    margin-top: var(--space-6);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
   }
 }

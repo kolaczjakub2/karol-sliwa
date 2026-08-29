@@ -1,16 +1,19 @@
 <section class="trusted">
   <div class="trusted__copy">
     <span class="eyebrow">Zaufali</span>
-    <h2>Marki i projekty, które już były po tej stronie parkietu.</h2>
+    <h2>Wybrane marki i projekty.</h2>
     <p>
-      Na przestrzeni lat Karol współpracował z różnymi firmami i brał udział
-      w bardzo różnych projektach. Forma jest otwarta, liczy się dopasowanie.
+      Od pojedynczych publikacji po większe akcje. Zakres zawsze wynikał z celu,
+      tematu i tego, co miało sens dla odbiorców.
     </p>
   </div>
 
   <div class="brand-cloud" aria-label="Przykładowe marki">
-    @for (brand of brands(); track brand) {
-      <span>{{ brand }}</span>
+    @for (brand of brands(); track brand.name) {
+      <figure>
+        <img [src]="brand.logoUrl" [alt]="brand.name" loading="lazy" decoding="async">
+        <figcaption>{{ brand.name }}</figcaption>
+      </figure>
     }
   </div>
 </section>

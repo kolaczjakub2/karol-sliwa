@@ -1,27 +1,14 @@
-@import '@angular/material/prebuilt-themes/azure-blue.css';
-
-@font-face {
-  font-family: 'Material Icons Outlined';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('https://fonts.gstatic.com/s/materialiconsoutlined/v110/gok-H7zzDkdnRel8-DQ6KAXJ69wP1tGnf4ZGhUcel5euIg.woff2') format('woff2');
-}
-
-.material-icons-outlined {
-  font-family: 'Material Icons Outlined';
-  font-weight: 400;
-  font-style: normal;
+.loading-spinner {
   display: inline-block;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  white-space: nowrap;
-  direction: ltr;
-  font-feature-settings: 'liga';
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
+  width: 42px;
+  height: 42px;
+  border: 3px solid color-mix(in srgb, var(--color-orange) 22%, transparent);
+  border-top-color: var(--color-orange);
+  border-radius: 50%;
+  animation: loading-spin 700ms linear infinite;
 }
+
+@keyframes loading-spin { to { transform: rotate(360deg); } }
 
 .link-arrow {
   width: 0.95em;
@@ -78,7 +65,7 @@ a:hover .link-arrow {
   --color-border: rgba(255, 255, 255, 0.11);
   --color-text: #f6f4ef;
   --color-muted: #a8a7a1;
-  --color-dimmed: #70726f;
+  --color-dimmed: #8d8f8b;
   --color-orange: #f05b24;
   --color-orange-dark: #ba3c14;
   --color-on-accent: #ffffff;
@@ -115,11 +102,10 @@ a:hover .link-arrow {
   --podcast-float-title: #ffffff;
   --card-hover-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
   --hero-mask: linear-gradient(90deg, transparent 0, black 20%, black 100%);
+  --hero-shell-glow: rgba(240, 91, 36, 0.18);
   --brand-logo-filter: invert(1) grayscale(1) brightness(2.1) contrast(1.12);
   --brand-logo-blend: screen;
 
-  --mat-app-background-color: var(--color-bg);
-  --mat-app-text-color: var(--color-text);
 }
 
 :root[data-theme='light'] {
@@ -127,18 +113,18 @@ a:hover .link-arrow {
   --color-bg: #ffffff;
   --color-bg-soft: #ffffff;
   --color-surface: #ffffff;
-  --color-surface-2: #f7f7f7;
+  --color-surface-2: #ffffff;
   --color-border: rgba(40, 30, 22, 0.14);
   --color-text: #17120f;
   --color-muted: #62584f;
-  --color-dimmed: #887b70;
+  --color-dimmed: #6b5f55;
   --color-orange: #c33f14;
   --color-orange-dark: #922e0f;
   --color-on-accent: #ffffff;
   --color-button-outline: rgba(23, 18, 15, 0.34);
-  --color-control-bg: rgba(255, 255, 255, 0.82);
-  --color-header-bg: rgba(255, 255, 255, 0.92);
-  --color-image-bg: #f1f1f1;
+  --color-control-bg: #ffffff;
+  --color-header-bg: #ffffff;
+  --color-image-bg: #ffffff;
   --color-danger: #bc2b1f;
   --switch-unselected-track: rgba(23, 18, 15, 0.16);
   --switch-unselected-track-hover: rgba(23, 18, 15, 0.22);
@@ -160,15 +146,14 @@ a:hover .link-arrow {
   --poster-muted-text: rgba(23, 18, 15, 0.38);
   --outline-stroke: rgba(23, 18, 15, 0.14);
   --podcast-label-stroke: rgba(23, 18, 15, 0.18);
-  --podcast-float-bg: rgba(255, 250, 242, 0.84);
+  --podcast-float-bg: #ffffff;
   --podcast-float-title: #17120f;
   --card-hover-shadow: 0 24px 70px rgba(112, 76, 45, 0.18);
   --hero-mask: linear-gradient(90deg, transparent 0, black 18%, black 100%);
+  --hero-shell-glow: transparent;
   --brand-logo-filter: none;
   --brand-logo-blend: multiply;
 
-  --mat-app-background-color: var(--color-bg);
-  --mat-app-text-color: var(--color-text);
 }
 
 * {
@@ -237,24 +222,4 @@ input {
 ::selection {
   background: var(--color-orange);
   color: var(--color-on-accent);
-}
-
-.mat-mdc-button,
-.mat-mdc-unelevated-button,
-.mat-mdc-raised-button,
-.mat-mdc-outlined-button {
-  min-height: 44px;
-}
-
-.mdc-text-field--outlined {
-  --mdc-outlined-text-field-outline-color: var(--color-border);
-  --mdc-outlined-text-field-hover-outline-color: rgba(240, 91, 36, 0.55);
-  --mdc-outlined-text-field-focus-outline-color: var(--color-orange);
-  --mdc-outlined-text-field-input-text-color: var(--color-text);
-  --mdc-outlined-text-field-label-text-color: var(--color-muted);
-  --mdc-outlined-text-field-leading-icon-color: var(--color-muted);
-}
-
-.mat-mdc-paginator-container {
-  color: var(--color-text);
 }

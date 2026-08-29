@@ -31,6 +31,8 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
+/.codex-preview/
+/deno.lock
 .sass-cache/
 /connect.lock
 /coverage
@@ -43,6 +45,7 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 dev-server*.log
+/wordpress-plugin/*.zip
 
 # Local Netlify folder
 .netlify

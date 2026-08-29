@@ -1,21 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { SeoService } from '../../core/services/seo.service';
-import { CollaborationContactComponent } from './components/collaboration-contact/collaboration-contact.component';
 import { CollaborationHeroComponent } from './components/collaboration-hero/collaboration-hero.component';
-import { CollaborationOptionsComponent } from './components/collaboration-options/collaboration-options.component';
-import { CollaborationPromisesComponent } from './components/collaboration-promises/collaboration-promises.component';
-import { CollaborationTrustedComponent } from './components/collaboration-trusted/collaboration-trusted.component';
-import { CooperationOption, PromiseItem } from './models/collaboration-page.model';
+import { CollaborationBrand, CooperationOption } from './models/collaboration-page.model';
 
 @Component({
   selector: 'ks-collaboration',
   standalone: true,
   imports: [
-    CollaborationHeroComponent,
-    CollaborationPromisesComponent,
-    CollaborationOptionsComponent,
-    CollaborationTrustedComponent,
-    CollaborationContactComponent
+    CollaborationHeroComponent
   ],
   templateUrl: './collaboration.component.html',
   styleUrl: './collaboration.component.scss'
@@ -24,12 +16,17 @@ export class CollaborationComponent {
   private readonly seo = inject(SeoService);
 
   readonly email = 'karolsli@wp.pl';
-  readonly brands = ['Tissot', 'Unibet', 'New Balance', 'Decathlon', 'Tarmak', 'Converse', 'Reebok', 'Sklep Koszykarza', 'Wydawnictwo SQN', 'Compressport'];
-  readonly promises: PromiseItem[] = [
-    { value: 'Od 2006', label: 'ciągłość i rozpoznawalność' },
-    { value: 'NBA', label: 'jasny kontekst odbiorców' },
-    { value: 'Podcast', label: 'formaty tekstowe i audio' },
-    { value: 'Bez szablonu', label: 'pomysł ważniejszy niż pakiet' }
+  readonly brands: CollaborationBrand[] = [
+    { name: 'Tissot', logoUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Tissot_Logo.svg' },
+    { name: 'Unibet', logoUrl: 'https://www.google.com/s2/favicons?domain=unibet.com&sz=128' },
+    { name: 'New Balance', logoUrl: 'https://cdn.simpleicons.org/newbalance' },
+    { name: 'Decathlon', logoUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Decathlon_Logo.svg' },
+    { name: 'Tarmak', logoUrl: 'https://www.google.com/s2/favicons?domain=decathlon.pl&sz=128' },
+    { name: 'Converse', logoUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Converse_logo.svg' },
+    { name: 'Reebok', logoUrl: 'https://cdn.simpleicons.org/reebok' },
+    { name: 'Sklep Koszykarza', logoUrl: 'https://skstore.eu/img/logo.svg?v=356264353639636436' },
+    { name: 'Wydawnictwo SQN', logoUrl: 'https://www.google.com/s2/favicons?domain=sqn.pl&sz=128' },
+    { name: 'Compressport', logoUrl: 'https://www.google.com/s2/favicons?domain=compressport.com&sz=128' }
   ];
   readonly options: CooperationOption[] = [
     {

@@ -1,10 +1,10 @@
 import { Component, input } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { AppIconComponent } from '../../../../shared/components/app-icon/app-icon.component';
 
 @Component({
   selector: 'ks-collaboration-contact',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [AppIconComponent],
   templateUrl: './collaboration-contact.component.html',
   styleUrl: './collaboration-contact.component.scss'
 })

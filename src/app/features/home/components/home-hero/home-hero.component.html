@@ -2,6 +2,8 @@
   class="hero"
   [class.hero--fallback]="!post().hasFeaturedImage"
   [class.hero--prev]="direction() === 'prev'"
+  [class.hero--long-title]="post().title.length > 62"
+  [class.hero--very-long-title]="post().title.length > 95"
   (mouseenter)="pauseChange.emit(true)"
   (mouseleave)="pauseChange.emit(false)"
 >
@@ -39,14 +41,17 @@
     <div class="hero__actions">
       <a class="hero__primary-cta" [routerLink]="['/', post().slug]">
         <span>Czytaj wpis</span>
-        <mat-icon fontSet="material-icons-outlined" aria-hidden="true">arrow_forward</mat-icon>
+        <span class="hero__cta-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </span>
       </a>
     </div>
   </div>
 
   <div class="hero__visual" [ngClass]="heroImageClass(post())">
     <a class="hero__visual-link" [routerLink]="['/', post().slug]" [attr.aria-label]="'Czytaj wpis: ' + post().title + ' — ' + primaryCategory(post())">
-      <span class="massive-title">{{ heroBackdropLabel(post()) }}</span>
       <img
         [src]="heroImage(post())"
         [attr.srcset]="post().imageSrcSet || null"
@@ -64,11 +69,15 @@
     </a>
 
     <div class="hero__controls" aria-label="Sterowanie wyróżnionymi wpisami">
-      <button mat-icon-button type="button" aria-label="Poprzedni wpis" (click)="previous.emit()">
-        <mat-icon fontSet="material-icons-outlined">chevron_left</mat-icon>
+      <button type="button" aria-label="Poprzedni wpis" (click)="previous.emit()">
+        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <path d="m15 5-7 7 7 7" />
+        </svg>
       </button>
-      <button mat-icon-button type="button" aria-label="Następny wpis" (click)="next.emit()">
-        <mat-icon fontSet="material-icons-outlined">chevron_right</mat-icon>
+      <button type="button" aria-label="Następny wpis" (click)="next.emit()">
+        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <path d="m9 5 7 7-7 7" />
+        </svg>
       </button>
     </div>
 

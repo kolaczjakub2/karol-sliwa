@@ -18,7 +18,7 @@
     gap: var(--space-2);
   }
 
-  h3,
+  h2,
   strong {
     margin: 0;
     color: var(--color-text);
@@ -65,7 +65,7 @@
     align-items: start;
     gap: var(--space-5);
     font-size: 0.78rem;
-    color: var(--color-dimmed);
+    color: var(--color-muted);
   }
 
   &__signature {
@@ -77,7 +77,7 @@
   }
 
   &__signature-label {
-    color: var(--color-dimmed);
+    color: var(--color-muted);
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 0.08em;
@@ -85,23 +85,58 @@
   }
 
   &__signature-logo {
+    position: relative;
+    z-index: 1;
     display: block;
     width: clamp(96px, 8.5vw, 128px);
     height: auto;
     filter: none;
     mix-blend-mode: normal;
     opacity: 1;
+    transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 260ms ease;
   }
 
   &__signature-link {
+    position: relative;
     display: inline-block;
     line-height: 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 12% -18%;
+      border-radius: 50%;
+      background: rgba(240, 91, 36, 0.42);
+      filter: blur(22px);
+      opacity: 0;
+      transform: scale(0.72);
+      transition: opacity 260ms ease, transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      pointer-events: none;
+    }
+
+    &:hover::before,
+    &:focus-visible::before {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    &:hover .footer__signature-logo,
+    &:focus-visible .footer__signature-logo {
+      transform: translateY(-4px) scale(1.06);
+      filter: drop-shadow(0 0 12px rgba(240, 91, 36, 0.75));
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-orange);
+      outline-offset: 8px;
+      border-radius: 8px;
+    }
   }
 
   &__author {
     grid-column: 1 / -1;
     margin-top: var(--space-1);
-    color: var(--color-dimmed);
+    color: var(--color-muted);
     font-size: 0.78rem;
   }
 }
@@ -154,5 +189,18 @@
 :host-context(html:not([data-theme='light'])) {
   .footer__signature-logo {
     filter: invert(1) grayscale(1) brightness(2.25) contrast(1.05);
+  }
+
+  .footer__signature-link:hover .footer__signature-logo,
+  .footer__signature-link:focus-visible .footer__signature-logo {
+    filter: invert(1) grayscale(1) brightness(2.8) contrast(1.05)
+      drop-shadow(0 0 12px rgba(240, 91, 36, 0.85));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer__signature-link::before,
+  .footer__signature-logo {
+    transition-duration: 0.01ms;
   }
 }

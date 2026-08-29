@@ -7,7 +7,7 @@
   <div class="cooperation-options__grid">
     @for (option of options(); track option.title) {
       <article>
-        <mat-icon fontSet="material-icons-outlined">{{ option.icon }}</mat-icon>
+        <ks-icon [name]="option.icon" />
         <h3>{{ option.title }}</h3>
         <p>{{ option.description }}</p>
       </article>

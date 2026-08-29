@@ -3,7 +3,10 @@
   publish = "dist/karol-sliwa-angular-redesign/browser"
 
 [images]
-  remote_images = ["https://karolsliwa\\.com/wp-content/uploads/.*"]
+  remote_images = [
+    "https://karolsliwa\\.com/wp-content/uploads/.*",
+    "https://i\\.ytimg\\.com/vi/.*"
+  ]
 
 [[plugins]]
   package = "@netlify/angular-runtime"

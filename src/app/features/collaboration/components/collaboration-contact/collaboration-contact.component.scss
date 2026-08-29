@@ -28,7 +28,7 @@
   }
 
   p {
-    max-width: 680px;
+    max-width: none;
     margin: 0;
     color: var(--color-muted);
     line-height: 1.75;
@@ -37,6 +37,13 @@
 
 .primary-cta--large {
   flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+@media (min-width: 1181px) {
+  .contact-panel p {
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 760px) {

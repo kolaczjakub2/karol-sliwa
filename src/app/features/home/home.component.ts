@@ -44,6 +44,7 @@ export class HomeComponent {
   private readonly sectionOffset = 130;
   private readonly shouldRestoreScroll = this.shouldRestoreScrollOnEntry();
   private sectionSyncBound = false;
+  private fragmentNavigationInProgress = false;
   private activeSectionFragment: string | null = null;
 
   readonly posts = signal<PostViewModel[]>([]);
@@ -194,6 +195,13 @@ export class HomeComponent {
       return;
     }
 
+    const requestedFragment = win.location.hash.slice(1);
+    if (this.sectionIds.includes(requestedFragment as (typeof this.sectionIds)[number])) {
+      this.activeSectionFragment = requestedFragment;
+      this.fragmentNavigationInProgress = true;
+      this.scrollToDeferredFragment(requestedFragment);
+    }
+
     if (!this.sectionSyncBound) {
       const updateFragment = () => {
         this.syncFragmentWithScroll();
@@ -210,9 +218,39 @@ export class HomeComponent {
 
     win.setTimeout(() => {
       this.collectObservedSections();
-      this.syncFragmentWithScroll(true);
+      if (!this.fragmentNavigationInProgress) {
+        this.syncFragmentWithScroll(true);
+      }
       this.persistHomeScrollPosition();
     }, 0);
+  }
+
+  private scrollToDeferredFragment(fragment: string, attempt = 0): void {
+    const win = this.document.defaultView;
+    if (!win) return;
+
+    const target = this.document.getElementById(fragment);
+    if (this.hasLayoutApi(target)) {
+      const header = this.document.querySelector('header.site-header');
+      const headerHeight = this.hasLayoutApi(header) ? header.getBoundingClientRect().height : 96;
+      const top = target.getBoundingClientRect().top + win.scrollY - headerHeight - 12;
+      win.scrollTo({ top: Math.max(0, top), behavior: attempt === 0 ? 'auto' : 'smooth' });
+
+      if (!target.classList.contains('deferred-section')) {
+        this.fragmentNavigationInProgress = false;
+        this.collectObservedSections();
+        this.activeSectionFragment = fragment;
+        return;
+      }
+    }
+
+    if (attempt < 30) {
+      win.setTimeout(() => this.scrollToDeferredFragment(fragment, attempt + 1), 100);
+    } else {
+      this.fragmentNavigationInProgress = false;
+      this.collectObservedSections();
+      this.syncFragmentWithScroll(true);
+    }
   }
 
   private collectObservedSections(): void {
@@ -226,6 +264,9 @@ export class HomeComponent {
   }
 
   private syncFragmentWithScroll(force = false): void {
+    if (this.fragmentNavigationInProgress) {
+      return;
+    }
     const win = this.document.defaultView;
     if (!win) {
       return;

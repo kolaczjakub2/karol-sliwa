@@ -17,7 +17,6 @@
       <span class="eyebrow">{{ post().topicNames | categoryLabel }}</span>
       <h3>{{ post().title }}</h3>
       @if (!compact()) {
-        <p>{{ post().excerptText }}</p>
         <div class="card__footer">
           <span class="read-more">
             <span>Czytaj dalej</span>
@@ -30,15 +29,11 @@
           </span>
           <div class="meta">
             <span>{{ post().date | date:'d MMM y':'':'pl' }}</span>
-            <span>•</span>
-            <span>{{ post().readTime }} min czytania</span>
           </div>
         </div>
       } @else {
         <div class="meta">
           <span>{{ post().date | date:'d MMM y':'':'pl' }}</span>
-          <span>•</span>
-          <span>{{ post().readTime }} min czytania</span>
         </div>
       }
     </div>

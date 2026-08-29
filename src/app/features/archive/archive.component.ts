@@ -1,7 +1,6 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ArticleCardComponent } from '../../shared/components/article-card/article-card.component';
 import { PostViewModel } from '../../core/models/wp-post.model';
 import { WordPressService } from '../../core/services/wordpress.service';
@@ -14,7 +13,7 @@ const ARCHIVE_FILTER_POOL_SIZE = 100;
 @Component({
   selector: 'ks-archive',
   standalone: true,
-  imports: [MatProgressSpinnerModule, ArticleCardComponent, ArchiveHeroComponent, ArchivePaginatorComponent],
+  imports: [ArticleCardComponent, ArchiveHeroComponent, ArchivePaginatorComponent],
   templateUrl: './archive.component.html',
   styleUrl: './archive.component.scss'
 })
